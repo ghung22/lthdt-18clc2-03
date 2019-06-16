@@ -20,7 +20,7 @@ public:
 	bool isDead();
 
 private:
-	char icon; //Assigned to PLAYER_SYMBOL in contructor
+	char icon; //Assigned to PLAYER_SYMBOL in contructor, change in setting menu
 	int x, y;
 	bool alive;
 };
