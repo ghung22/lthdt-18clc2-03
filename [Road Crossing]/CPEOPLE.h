@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include "CGAME.h"
 
@@ -7,20 +7,22 @@ class CPEOPLE
 public:
 	CPEOPLE();
 
-	void Move(char button); //Call 4 direction functions below
+	void Move(char button); //Gọi 4 hàm hướng đi bên dưới
 	void up();
 	void left();
 	void right();
 	void down();
 
-	bool inContact(const CVEHICLE*&);
-	bool inContact(const CANIMAL*&);
+	bool inContact(CVEHICLE v);
+	bool inContact(CANIMAL a);
+	CVEHICLE nowContact(const CVEHICLE*& v); //Trả về vehicle đang va chạm với people
+	CANIMAL nowContact(const CANIMAL*& a);
 
 	bool isFinish();
 	bool isDead();
 
 private:
-	char icon; //Assigned to PLAYER_SYMBOL in contructor, change in setting menu
-	int x, y;
+	char icon; //Có giá trị là PLAYER_SYMBOL (hằng số nằm trong CGAME.h và biến được gán trong contructor), có thể thay đổi lại trong mục Setting của game
+	Vect2D pos;
 	bool alive;
 };
