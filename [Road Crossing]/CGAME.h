@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include <vector>
 #include "Window.h"
 #include "Threads.h"
 #include "CPEOPLE.h"
@@ -11,7 +12,7 @@
 class CGAME
 {
 public:
-	CGAME() = default;
+	//CGAME();
 	//~CGAME();
 
 	CPEOPLE getPeople();
@@ -21,6 +22,7 @@ public:
 	void draw();
 	void reset();
 	void exit(thread::native_handle_type handle);
+
 	void start();
 
 	void load();
@@ -33,9 +35,9 @@ public:
 	void updatePosAnimal();
 
 private:
-	CTruck* tObj;
-	CCar* cObj;
-	CDino* dObj;
-	CBird* bObj;
-	CPEOPLE* p;
+	vector<CTruck> tObj;
+	vector<CCar> cObj;
+	vector<CDino> dObj;
+	vector<CBird> bObj;
+	CPEOPLE p;
 };

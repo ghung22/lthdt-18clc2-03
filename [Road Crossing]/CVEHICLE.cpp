@@ -1,8 +1,6 @@
 ﻿#include "CVEHICLE.h"
-#include "Windows.h"
 
 #include <iostream>
-#include <string>
 using namespace std;
 
 bool CVEHICLE::inContact(Point ppos)
@@ -12,6 +10,7 @@ bool CVEHICLE::inContact(Point ppos)
 	//Việc xét điểm y còn tuỳ vào kích cỡ của vehicle
 }
 
+void CVEHICLE::draw() { }
 void CTruck::draw(char s, COORD pos)
 {
 	GotoXY(pos.X, pos.Y);
