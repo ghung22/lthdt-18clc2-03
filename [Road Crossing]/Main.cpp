@@ -1,6 +1,4 @@
-﻿#include "Window.h"
-#include "Threads.h"
-#include "CGAME.h"
+﻿#include "CGAME.h"
 
 /* RETURN VALUE LIST:
 	0	-	Ko vấn đề.
@@ -12,10 +10,13 @@ CGAME* game;
 
 int main()
 {
-	game = new CGAME();
+	CPEOPLE p;
+	cout << p.pos.x << ' ' << p.pos.y;
+
+	//game = new CGAME;
 	char pressed;
 	LockWinSize();
-	game->start();
+	//game->start();
 	thread gThread(UpdateGameFrame);		//Chạy hàm song song với main()
 	while (true)
 	{

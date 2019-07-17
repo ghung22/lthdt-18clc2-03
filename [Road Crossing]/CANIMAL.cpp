@@ -1,6 +1,6 @@
 ﻿#include "CANIMAL.h"
 
-bool CANIMAL::inContact(Vect2D ppos)
+bool CANIMAL::inContact(Point ppos)
 {
 	return pos.x <= ppos.x && ppos.x <= pos.x + 2
 		&& pos.y == ppos.y;
