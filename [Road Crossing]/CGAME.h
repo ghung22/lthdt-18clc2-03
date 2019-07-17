@@ -24,6 +24,7 @@ public:
 	void exit(thread::native_handle_type handle);
 
 	void start();
+	void game();
 
 	void load();
 	void save();
