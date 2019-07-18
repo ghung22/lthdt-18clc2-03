@@ -1,6 +1,8 @@
 #include "CPEOPLE.h"
 #include "Constants.h"
-//#include <Windows.h>
+
+#include <iostream>
+using namespace std;
 
 CPEOPLE::CPEOPLE()
 {
@@ -41,4 +43,26 @@ CPEOPLE::CPEOPLE()
 bool CPEOPLE::isDead()
 {
 	return true;
+}
+
+void CPEOPLE::draw(char s, COORD pos)
+{
+	if (s == ' ')
+	{
+		GotoXY(pos.X, pos.Y);
+		cout << "  ";
+		GotoXY(pos.X, pos.Y + 1);
+		cout << "   ";
+		GotoXY(pos.X, pos.Y + 2);
+		cout << "  ";
+	}
+	else
+	{
+		GotoXY(pos.X, pos.Y);
+		cout << ' ' << s;
+		GotoXY(pos.X, pos.Y + 1);
+		cout << '-' << (char)219 << '-';
+		GotoXY(pos.X, pos.Y + 2);
+		cout << ' ' << '^';
+	}
 }

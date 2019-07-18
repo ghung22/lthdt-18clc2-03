@@ -8,5 +8,9 @@ struct Point //2D vector
 };
 
 void LockWinSize();
+void ChangeCursor(bool visible, short size = 1);
+void HideCursor();
+void ShowCursor();
+
 COORD GotoXY(int x, int y);
 COORD GetXY();

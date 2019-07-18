@@ -14,12 +14,15 @@ void CGAME::draw() { }
 void CGAME::reset() { }
 void CGAME::exit(thread::native_handle_type handle)
 {
+	system("cls");
+	terminate();
 	quick_exit(0);
 }
 
 void CGAME::start()
 {
 	LockWinSize(); //Khoá thay đổi size màn hình
+	ShowCursor(); //Hiện con trỏ
 	while (true)
 	{
 		int lc; // biến lựa chọn menu
@@ -59,6 +62,7 @@ void CGAME::start()
 void CGAME::game()
 {
 	system("cls");
+	HideCursor(); //Giấu con trỏ
 	char pressed;
 	thread gThread(UpdateGameFrame);		//Chạy hàm song song với main()
 	while (true)
@@ -67,7 +71,7 @@ void CGAME::game()
 		if (!getPeople().isDead())	//Nếu người chơi chưa die, nhận nút di chuyển và các nút menu
 			switch (pressed)
 			{
-			case 27:	//Phím ESC
+			case VK_ESCAPE:	//Phím ESC
 				exit(gThread.native_handle());
 			case 'P':
 				pause(gThread.native_handle());
