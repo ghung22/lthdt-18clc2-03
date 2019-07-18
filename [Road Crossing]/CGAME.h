@@ -25,6 +25,7 @@ public:
 
 	void start();
 	void game();
+	void setting();
 
 	void load();
 	void save();

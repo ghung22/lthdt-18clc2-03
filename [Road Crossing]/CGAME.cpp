@@ -29,12 +29,12 @@ void CGAME::start()
 		do {
 			system("cls"); // xóa màn hình
 			cout << endl << endl
-				<< "\t\t\t\t================ Menu ================" << endl
+				<< "\t\t\t\t================ ROAD CROSSING ================" << endl
 				<< "\t\t\t\t\t1. NEW GAME " << endl
 				<< "\t\t\t\t\t2. LOAD GAME " << endl
 				<< "\t\t\t\t\t3. SETTINGS " << endl
 				<< "\t\t\t\t\t0. EXIT " << endl
-				<< "\t\t\t\t================ End =================" << endl;
+				<< "\t\t\t\t===============================================" << endl;
 			// Nhập lựa chọn
 			cout << "Choose your option: ";
 			cin >> lc;
@@ -44,7 +44,7 @@ void CGAME::start()
 			case 0: break;
 			case 1: game(); break;
 			case 2: load(); break;
-			case 3: break;
+			case 3: setting(); break;
 			default:
 				//Nếu người dùng nhập lựa chọn không hợp lệ thì yêu cầu người dùng nhập lại 
 				cout << "\n ERROR! ";
@@ -89,6 +89,35 @@ void CGAME::game()
 				exit(gThread.native_handle());
 		}
 	}
+}
+void CGAME::setting()
+{
+	ShowCursor();
+	while (true)
+	{
+		int o;
+		system("cls");
+		cout
+			<< "================ SETTINGS ================" << endl
+			<< "1. Music: " << endl
+			<< "2. Sound: " << endl
+			<< "3. Player head: " << endl
+			<< "0. Quit: " << endl
+			<< "==========================================" << endl;
+		cout << "Choose your option: ";
+		cin >> o;
+		cin.ignore();
+		switch (o)
+		{
+		case 1: game(); break;
+		case 2: load(); break;
+		case 3: setting(); break;
+		}
+
+		if (o == 0)
+			break;
+	}
+	start();
 }
 
 void CGAME::load() { }
