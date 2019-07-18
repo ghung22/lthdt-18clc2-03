@@ -22,6 +22,20 @@ void ChangeCursor(bool visible, short size)
 }
 void HideCursor() { ChangeCursor(false); }
 void ShowCursor() { ChangeCursor(true); }
+void HideInput()
+{
+	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD mode = 0;
+	GetConsoleMode(input, &mode);
+	SetConsoleMode(input, mode & (~ENABLE_ECHO_INPUT));
+}
+void ShowInput()
+{
+	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD mode = 0;
+	GetConsoleMode(input, &mode);
+	SetConsoleMode(input, mode & (ENABLE_ECHO_INPUT));
+}
 
 COORD GotoXY(int x, int y)
 {
@@ -29,16 +43,12 @@ COORD GotoXY(int x, int y)
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
 	GetConsoleScreenBufferInfo(console, &cbsi);
 	while (x > cbsi.srWindow.Right)
-	{
 		x -= cbsi.srWindow.Right;							//Chuyển về phía bên kia màn hình nếu ra ngoài
-		y++;
-	}
 
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(console, coord);				//Dời con trỏ đến toạ độ coord trên "console"
 	return coord;
 }
-
 COORD GetXY()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);

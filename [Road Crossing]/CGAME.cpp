@@ -1,4 +1,8 @@
 ﻿#include "CGAME.h"
+#include "Constants.h"
+
+#include <fstream>
+#include <string>
 
 char MOVING;
 
@@ -23,6 +27,7 @@ void CGAME::start()
 {
 	LockWinSize(); //Khoá thay đổi size màn hình
 	ShowCursor(); //Hiện con trỏ
+	ShowInput(); //Hiện input
 	while (true)
 	{
 		int lc; // biến lựa chọn menu
@@ -63,6 +68,7 @@ void CGAME::game()
 {
 	system("cls");
 	HideCursor(); //Giấu con trỏ
+	HideInput(); //Giấu input
 	char pressed;
 	thread gThread(UpdateGameFrame);		//Chạy hàm song song với main()
 	while (true)
@@ -92,32 +98,87 @@ void CGAME::game()
 }
 void CGAME::setting()
 {
+	settingLoad();
 	ShowCursor();
+	ShowInput();
 	while (true)
 	{
 		int o;
 		system("cls");
 		cout
 			<< "================ SETTINGS ================" << endl
-			<< "1. Music: " << endl
-			<< "2. Sound: " << endl
-			<< "3. Player head: " << endl
-			<< "0. Quit: " << endl
+			<< "1. Music: " << music << endl
+			<< "2. Sound: " << sound << endl
+			<< "3. Player head: " << p.getIcon() << endl
+			<< "4. Restore default settings" << endl
+			<< "0. Quit." << endl
 			<< "==========================================" << endl;
 		cout << "Choose your option: ";
 		cin >> o;
 		cin.ignore();
 		switch (o)
 		{
-		case 1: game(); break;
-		case 2: load(); break;
-		case 3: setting(); break;
+		case 1: music = !music; break;
+		case 2: sound = !sound; break;
+		case 3: 
+			char c;
+			cout << "> Enter any character: ";
+			cin >> c;
+			p.setIcon(c);
+			break;
+		case 4: 
+			music = true;
+			sound = true;
+			p.setIcon(PLAYER_SYMBOL);
+			break;
 		}
 
 		if (o == 0)
 			break;
 	}
+	settingSave();
 	start();
+}
+void CGAME::settingLoad()
+{
+	ifstream fin("setting.ini");
+	if (fin.fail())
+	{
+		settingSave();
+		return;
+	}
+	string temp;
+	while (!fin.eof())
+	{
+		getline(fin, temp);
+		if (temp.length() > 0)
+		{
+			char c = temp[temp.length() - 1];
+			if (temp.find("bMusic") != string::npos)
+				music = c - '0';
+			else if (temp.find("bSound") != string::npos)
+				sound = c - '0';
+			else if (temp.find("cPlayerCharacter") != string::npos)
+				p.setIcon(c);
+		}
+	}
+	fin.close();
+}
+void CGAME::settingSave()
+{
+	ofstream fout("setting.ini");
+	if (fout.fail())
+	{
+		cout << "Failed to save settings to file" << endl;
+		return;
+	}
+	fout << "[Media]" << endl
+		<< "bMusic=" << music << endl
+		<< "bSound=" << sound << endl
+		<< endl
+		<< "[Main]" << endl
+		<< "cPlayerCharacter=" << p.getIcon() << endl;
+	fout.close();
 }
 
 void CGAME::load() { }

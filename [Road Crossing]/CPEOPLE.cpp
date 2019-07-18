@@ -66,3 +66,5 @@ void CPEOPLE::draw(char s, COORD pos)
 		cout << ' ' << '^';
 	}
 }
+char CPEOPLE::getIcon() { return icon; }
+char CPEOPLE::setIcon(char i) { icon = i; return icon; }

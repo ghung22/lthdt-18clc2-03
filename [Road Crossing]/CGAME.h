@@ -26,6 +26,8 @@ public:
 	void start();
 	void game();
 	void setting();
+	void settingLoad();
+	void settingSave();
 
 	void load();
 	void save();
@@ -37,9 +39,12 @@ public:
 	void updatePosAnimal();
 
 private:
-	vector<CTruck> tObj;
-	vector<CCar> cObj;
-	vector<CDino> dObj;
-	vector<CBird> bObj;
+	vector<CTruck> truck;
+	vector<CCar> car;
+	vector<CDino> dino;
+	vector<CBird> bird;
 	CPEOPLE p;
+
+	bool music;
+	bool sound;
 };
