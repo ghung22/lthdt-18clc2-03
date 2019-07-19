@@ -12,20 +12,43 @@ void LockWinSize()
 	//Set the size
 	ShowScrollBar(window, SB_BOTH, false);
 }
+void ChangeCursor(bool visible, short size)
+{
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_CURSOR_INFO info;
+	info.dwSize = size;
+	info.bVisible = visible;
+	SetConsoleCursorInfo(console, &info);
+}
+void HideCursor() { ChangeCursor(false); }
+void ShowCursor() { ChangeCursor(true); }
+void HideInput()
+{
+	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD mode = 0;
+	GetConsoleMode(input, &mode);
+	SetConsoleMode(input, mode & (~ENABLE_ECHO_INPUT));
+}
+void ShowInput()
+{
+	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
+	DWORD mode = 0;
+	GetConsoleMode(input, &mode);
+	SetConsoleMode(input, mode & (ENABLE_ECHO_INPUT));
+}
 
 COORD GotoXY(int x, int y)
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);		//get console handle
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
 	GetConsoleScreenBufferInfo(console, &cbsi);
-	while (x + 5 > cbsi.srWindow.Right)						// + 5 để né các ô dư
+	while (x > cbsi.srWindow.Right)
 		x -= cbsi.srWindow.Right;							//Chuyển về phía bên kia màn hình nếu ra ngoài
 
 	COORD coord = { x, y };
 	SetConsoleCursorPosition(console, coord);				//Dời con trỏ đến toạ độ coord trên "console"
 	return coord;
 }
-
 COORD GetXY()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
