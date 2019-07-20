@@ -10,6 +10,24 @@ bool CANIMAL::inContact(Point ppos)
 	//Việc xét điểm y còn tuỳ vào kích cỡ của animal
 }
 
+CANIMAL::CANIMAL()
+{
+	pos.x = 0;
+	pos.y = 0;
+	speed = 0;
+}
+
+CANIMAL::CANIMAL(int y, int s_speed)
+{
+	pos.x = 0;
+	pos.y = y;
+	speed = s_speed;
+}
+
+CBird::CBird() : CANIMAL(1, 20){}
+
+CDino::CDino(): CANIMAL(3, 30){}
+
 void CANIMAL::draw() { }
 void CBird::draw(char s, COORD pos)
 {

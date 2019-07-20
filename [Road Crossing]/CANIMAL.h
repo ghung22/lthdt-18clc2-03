@@ -5,8 +5,8 @@
 class CANIMAL
 {
 public:
-	//CANIMAL();
-	//CANIMAL(int x, int y, int speedX = 0, int speedY = 0);		//Đặt pos và speed cho class con
+	CANIMAL();
+	CANIMAL(int y, int s_speed);		//Đặt pos và speed cho class con
 	//CANIMAL(int speedX, int speedY);							//Đặt speed cho class con
 
 	virtual void draw();
@@ -16,15 +16,17 @@ public:
 
 private:
 	Point pos;
-	Point speed;
+	int speed;
 };
-class CBird : CANIMAL
+class CBird : public CANIMAL
 {
 public:
+	CBird();
 	void draw(char s, COORD pos);
 };
-class CDino : CANIMAL
+class CDino : public CANIMAL
 {
 public:
+	CDino();
 	void draw(char s, COORD pos);
 };

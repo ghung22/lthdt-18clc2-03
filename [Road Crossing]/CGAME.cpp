@@ -6,6 +6,23 @@
 
 char MOVING;
 
+CGAME::CGAME()
+{
+	CTruck t;
+	CCar c;
+	CBird b;
+	CDino d;
+	truck.push_back(t);
+	car.push_back(c);
+	bird.push_back(b);
+	dino.push_back(d);
+	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
+	CONSOLE_SCREEN_BUFFER_INFO cbsi;
+	GetConsoleScreenBufferInfo(console, &cbsi);
+	p.icon = PLAYER_SYMBOL;
+	p.pos = { cbsi.srWindow.Right / 2, cbsi.srWindow.Bottom };
+}
+
 CPEOPLE CGAME::getPeople()
 {
 	return p;

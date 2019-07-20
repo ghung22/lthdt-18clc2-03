@@ -12,7 +12,7 @@
 class CGAME
 {
 public:
-	//CGAME();
+	CGAME();
 	//~CGAME();
 
 	CPEOPLE getPeople();
