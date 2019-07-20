@@ -37,19 +37,21 @@ void ShowInput()
 	SetConsoleMode(input, mode & (ENABLE_ECHO_INPUT));
 }
 
-COORD GotoXY(int x, int y)
+Point GotoXY(int x, int y)
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);		//get console handle
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
 	GetConsoleScreenBufferInfo(console, &cbsi);
 	while (x > cbsi.srWindow.Right)
 		x -= cbsi.srWindow.Right;							//Chuyển về phía bên kia màn hình nếu ra ngoài
+	while (y > cbsi.srWindow.Bottom)
+		y -= cbsi.srWindow.Bottom;
 
-	COORD coord = { x, y };
+	Point coord = { x, y };
 	SetConsoleCursorPosition(console, coord);				//Dời con trỏ đến toạ độ coord trên "console"
 	return coord;
 }
-COORD GetXY()
+Point GetXY()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
@@ -57,7 +59,7 @@ COORD GetXY()
 		return cbsi.dwCursorPosition;
 	else
 	{
-		COORD error = { 0, 0 };
+		Point error = { 0, 0 };
 		return error;
 	}
 }

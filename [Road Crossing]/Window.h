@@ -2,10 +2,7 @@
 
 #include <Windows.h>
 
-struct Point //2D vector
-{
-	int x, y;
-};
+typedef COORD Point;
 
 void LockWinSize();
 void ChangeCursor(bool visible, short size = 1);
@@ -14,5 +11,5 @@ void ShowCursor();
 void HideInput();
 void ShowInput();
 
-COORD GotoXY(int x, int y);
-COORD GetXY();
+Point GotoXY(int x, int y);
+Point GetXY();

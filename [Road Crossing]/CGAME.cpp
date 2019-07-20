@@ -121,15 +121,12 @@ void CGAME::setting()
 		case 1: music = !music; break;
 		case 2: sound = !sound; break;
 		case 3: 
-			char c;
-			cout << "> Enter any character: ";
-			cin >> c;
-			p.setIcon(c);
+			p.setIcon(p.getIcon() + 1);
 			break;
 		case 4: 
 			music = true;
 			sound = true;
-			p.setIcon(PLAYER_SYMBOL);
+			p.setIcon(0);
 			break;
 		}
 

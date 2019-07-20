@@ -1,4 +1,4 @@
-#include "CPEOPLE.h"
+﻿#include "CPEOPLE.h"
 #include "Constants.h"
 
 #include <iostream>
@@ -10,7 +10,7 @@ CPEOPLE::CPEOPLE()
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
 	GetConsoleScreenBufferInfo(console, &cbsi);
 	
-	icon = PLAYER_SYMBOL;
+	icon = 0;
 	pos = { cbsi.srWindow.Right / 2, cbsi.srWindow.Bottom };
 	alive = true;
 }
@@ -45,9 +45,9 @@ bool CPEOPLE::isDead()
 	return true;
 }
 
-void CPEOPLE::draw(char s, COORD pos)
+void CPEOPLE::draw(Point pos, bool erase)
 {
-	if (s == ' ')
+	if (erase)
 	{
 		GotoXY(pos.X, pos.Y);
 		cout << "  ";
@@ -58,13 +58,26 @@ void CPEOPLE::draw(char s, COORD pos)
 	}
 	else
 	{
+		char i;
+		switch (icon)
+		{
+		case 1: i = char(235); break; //δ
+		case 2: i = char(229); break; //σ
+		default: i = 'o'; break;
+		}
 		GotoXY(pos.X, pos.Y);
-		cout << ' ' << s;
-		GotoXY(pos.X, pos.Y + 1);
-		cout << '-' << (char)219 << '-';
-		GotoXY(pos.X, pos.Y + 2);
-		cout << ' ' << '^';
+		cout << ' ' << i;
+		GotoXY(pos.X, pos.Y + 1);						// o				 o
+		cout << char(218) << char(197) << char(217);	//┌┼┘ //192 197 191 └┼┐
+		GotoXY(pos.X, pos.Y + 2);						// π				 π
+		cout << ' ' << char(227);
 	}
 }
-char CPEOPLE::getIcon() { return icon; }
-char CPEOPLE::setIcon(char i) { icon = i; return icon; }
+int CPEOPLE::getIcon() { return icon; }
+int CPEOPLE::setIcon(int i)
+{
+	icon = i;
+	if (icon > 2 || icon < 0)
+		icon = 0;
+	return icon;
+}
