@@ -1,30 +1,23 @@
 ﻿#pragma once
 
-#include "Window.h"
+#include "COBJECT.h"
 
-class CANIMAL
+class CANIMAL : public COBJECT
 {
 public:
-	//CANIMAL();
-	//CANIMAL(int x, int y, int speedX = 0, int speedY = 0);		//Đặt pos và speed cho class con
-	//CANIMAL(int speedX, int speedY);							//Đặt speed cho class con
-
-	//virtual void draw(Point pos, bool erase = false);
+	CANIMAL();
+	CANIMAL(int y, int spd);
 	virtual void speak();
 
 	bool inContact(Point ppos);
-
-private:
-	Point pos;
-	int speed;
 };
-class CBird : CANIMAL
+class CBird : public CANIMAL
 {
 public:
-	void draw(Point pos, bool erase = false);
+	CBird();
 };
-class CDino : CANIMAL
+class CDino : public CANIMAL
 {
 public:
-	void draw(Point pos, bool erase = false);
+	CDino();
 };

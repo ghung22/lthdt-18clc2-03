@@ -1,7 +1,5 @@
 ﻿#pragma once
 
-#include <vector>
-#include "Window.h"
 #include "Threads.h"
 #include "CPEOPLE.h"
 #include "CVEHICLE.h"
@@ -12,7 +10,7 @@
 class CGAME
 {
 public:
-	//CGAME();
+	CGAME();
 	//~CGAME();
 
 	CPEOPLE getPeople();

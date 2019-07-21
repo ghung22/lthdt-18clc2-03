@@ -1,18 +1,30 @@
 ﻿#include "CPEOPLE.h"
 #include "Constants.h"
 
-#include <iostream>
-using namespace std;
-
 CPEOPLE::CPEOPLE()
 {
 	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
 	CONSOLE_SCREEN_BUFFER_INFO cbsi;
 	GetConsoleScreenBufferInfo(console, &cbsi);
-	
+
+	SMALL_RECT sizeRect = cbsi.srWindow;
 	icon = 0;
-	pos = { cbsi.srWindow.Right / 2, cbsi.srWindow.Bottom };
+	pos = { sizeRect.Right / 2, sizeRect.Bottom };
 	alive = true;
+	setAvatar(0);
+}
+void CPEOPLE::setAvatar(int i)
+{
+	char c;
+	switch (icon)
+	{
+	case 1: c = char(235); break; //δ
+	case 2: c = char(229); break; //σ
+	default: c = 'o'; break;
+	}
+	avatar[0] = { ' ', c };								// o				 o
+	avatar[1] = { char(218), char(197), char(217) };	//┌┼┘ //192 197 191 └┼┐
+	avatar[2] = { ' ', char(227) };						// π				 π
 }
 
 //bool CPEOPLE::inContact(CVEHICLE v)
@@ -45,39 +57,12 @@ bool CPEOPLE::isDead()
 	return true;
 }
 
-void CPEOPLE::draw(Point pos, bool erase)
-{
-	if (erase)
-	{
-		GotoXY(pos.X, pos.Y);
-		cout << "  ";
-		GotoXY(pos.X, pos.Y + 1);
-		cout << "   ";
-		GotoXY(pos.X, pos.Y + 2);
-		cout << "  ";
-	}
-	else
-	{
-		char i;
-		switch (icon)
-		{
-		case 1: i = char(235); break; //δ
-		case 2: i = char(229); break; //σ
-		default: i = 'o'; break;
-		}
-		GotoXY(pos.X, pos.Y);
-		cout << ' ' << i;
-		GotoXY(pos.X, pos.Y + 1);						// o				 o
-		cout << char(218) << char(197) << char(217);	//┌┼┘ //192 197 191 └┼┐
-		GotoXY(pos.X, pos.Y + 2);						// π				 π
-		cout << ' ' << char(227);
-	}
-}
 int CPEOPLE::getIcon() { return icon; }
 int CPEOPLE::setIcon(int i)
 {
 	icon = i;
 	if (icon > 2 || icon < 0)
 		icon = 0;
+	setAvatar(i);
 	return icon;
 }

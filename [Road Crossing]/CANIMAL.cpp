@@ -1,49 +1,23 @@
 ﻿#include "CANIMAL.h"
 
-#include <iostream>
-using namespace std;
+CANIMAL::CANIMAL() { pos.X = pos.Y = speed = 0; }
+CANIMAL::CANIMAL(int y, int spd) { pos.Y = y; speed = spd; }
+CBird::CBird() : CANIMAL(BIRD_Y, BIRD_SPD)
+{
+	avatar[0] = { char(169), char(250), char(170) };	//⌐·¬	-·-
+}
+CDino::CDino(): CANIMAL(DINO_Y, DINO_SPD)
+{
+	avatar[0] = { ' ', char(244) };			// ⌠
+	avatar[1] = "(0)";						//(0)
+	avatar[2] = { char(217), 'L', 'L' };	//┘LL
+}
 
 bool CANIMAL::inContact(Point ppos)
 {
 	return pos.X <= ppos.X && ppos.X <= pos.X + 2
 		&& pos.Y == ppos.Y;
 	//Việc xét điểm y còn tuỳ vào kích cỡ của animal
-}
-
-//void CANIMAL::draw() { }
-void CBird::draw(Point pos, bool erase)
-{
-	if (erase)
-	{
-		GotoXY(pos.X - 1, pos.Y);
-		cout << "   ";
-	}
-	else
-	{
-		GotoXY(pos.X, pos.Y);
-		cout << char(169) << char(250) << char(170); //⌐·¬	-·-
-	}
-}
-void CDino::draw(Point pos, bool erase)
-{
-	if (erase)
-	{
-		GotoXY(pos.X - 1, pos.Y);
-		cout << "  ";
-		GotoXY(pos.X - 1, pos.Y + 1);
-		cout << "   ";
-		GotoXY(pos.X - 1, pos.Y + 2);
-		cout << "   ";
-	}
-	else
-	{
-		GotoXY(pos.X, pos.Y);
-		cout << ' ' << char(244);			// ⌠
-		GotoXY(pos.X, pos.Y + 1);			//(0)
-		cout << "(0)";						//┘LL
-		GotoXY(pos.X, pos.Y + 2);
-		cout << char(217) << "LL";
-	}
 }
 
 void CANIMAL::speak() { }

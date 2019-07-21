@@ -5,6 +5,22 @@
 #include <string>
 
 char MOVING;
+Window w;
+
+CGAME::CGAME()
+{
+	CTruck t;
+	CCar c;
+	CBird b;
+	CDino d;
+	truck.push_back(t);
+	car.push_back(c);
+	dino.push_back(d);
+	bird.push_back(b);
+
+	music = 1;
+	sound = 1;
+}
 
 CPEOPLE CGAME::getPeople()
 {
@@ -25,9 +41,10 @@ void CGAME::exit(thread::native_handle_type handle)
 
 void CGAME::start()
 {
-	LockWinSize(); //Khoá thay đổi size màn hình
-	ShowCursor(); //Hiện con trỏ
-	ShowInput(); //Hiện input
+	settingLoad();
+	w.LockWinSize(); //Khoá thay đổi size màn hình
+	w.ShowCursor(); //Hiện con trỏ
+	//ShowInput(); //Hiện input
 	while (true)
 	{
 		int lc; // biến lựa chọn menu
@@ -67,8 +84,8 @@ void CGAME::start()
 void CGAME::game()
 {
 	system("cls");
-	HideCursor(); //Giấu con trỏ
-	HideInput(); //Giấu input
+	w.HideCursor(); //Giấu con trỏ
+	//HideInput(); //Giấu input
 	char pressed;
 	thread gThread(UpdateGameFrame);		//Chạy hàm song song với main()
 	while (true)
@@ -98,9 +115,8 @@ void CGAME::game()
 }
 void CGAME::setting()
 {
-	settingLoad();
-	ShowCursor();
-	ShowInput();
+	w.ShowCursor();
+	//ShowInput();
 	while (true)
 	{
 		int o;

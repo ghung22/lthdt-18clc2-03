@@ -1,11 +1,12 @@
 ﻿#pragma once
 
-#include "Window.h"
+#include "COBJECT.h"
 
-class CPEOPLE
+class CPEOPLE : public COBJECT
 {
 public:
 	CPEOPLE();
+	void setAvatar(int i);
 
 	//void Move(char button) { } //Gọi 4 hàm hướng đi bên dưới
 	//void up() { }
@@ -21,12 +22,10 @@ public:
 	//bool isFinish() { return true; }
 	bool isDead();
 
-	void draw(Point pos, bool erase = false);
 	int getIcon();
 	int setIcon(int i);
 
-//private:
+private:
 	int icon;
-	Point pos;
 	bool alive;
 };

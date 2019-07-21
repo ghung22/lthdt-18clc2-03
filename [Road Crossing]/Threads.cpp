@@ -2,6 +2,9 @@
 #include "CGAME.h"
 #include "Constants.h"
 
+#include <iostream>
+using namespace std;
+
 bool IS_RUNNING = true;
 
 void exitGame(thread* t)
@@ -10,7 +13,7 @@ void exitGame(thread* t)
 	IS_RUNNING = false;	//Stop update frames
 	t->join();			//Join main thread
 }
-
+//GetKeyState()
 void UpdateGameFrame()
 {
 	int temp = 0;
@@ -32,16 +35,16 @@ void UpdateGameFrame()
 		if (temp % 20 == 0)
 		{
 			short s = temp / 20;
-			t.draw({ _t.X + s, _t.Y }, true);
+			t.erase({ _t.X + s, _t.Y });
 			t.draw({ _t.X + s, _t.Y });
 			
-			c.draw({ _c.X + s, _c.Y }, true);
+			c.erase({ _c.X + s, _c.Y });
 			c.draw({ _c.X + s, _c.Y });
 			
-			b.draw({ _b.X + s, _b.Y }, true);
+			b.erase({ _b.X + s, _b.Y });
 			b.draw({ _b.X + s, _b.Y });
 			
-			d.draw({ _d.X + s, _d.Y }, true);
+			d.erase({ _d.X + s, _d.Y });
 			d.draw({ _d.X + s, _d.Y });
 		}
 		temp++;
