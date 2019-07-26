@@ -3,9 +3,11 @@
 
 #include <fstream>
 #include <string>
+#include <conio.h>
 
 char MOVING;
 Window w;
+extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
 
 CGAME::CGAME()
 {
@@ -22,62 +24,43 @@ CGAME::CGAME()
 	sound = 1;
 }
 
-CPEOPLE CGAME::getPeople()
-{
-	return p;
-}
-
-CVEHICLE* CGAME::getVehicle() { return nullptr; }
-CANIMAL* CGAME::getAnimal() { return nullptr; }
-
 void CGAME::draw() { }
 void CGAME::reset() { }
-void CGAME::exit(thread::native_handle_type handle)
+void CGAME::exit(thread& t)
 {
-	system("cls");
-	terminate();
-	quick_exit(0);
+	exitGame(t);
+	start();
 }
 
 void CGAME::start()
 {
 	settingLoad();
 	w.LockWinSize(); //Khoá thay đổi size màn hình
-	w.ShowCursor(); //Hiện con trỏ
-	//ShowInput(); //Hiện input
-	while (true)
+	w.HideCursor(); //Ẩn con trỏ
+
+	char lc = 0; // biến lựa chọn menu
+	system("cls"); // xóa màn hình
+	cout << endl << endl
+		<< "\t\t\t\t================ ROAD CROSSING ================" << endl
+		<< "\t\t\t\t\t1. NEW GAME " << endl
+		<< "\t\t\t\t\t2. LOAD GAME " << endl
+		<< "\t\t\t\t\t3. SETTINGS " << endl
+		<< "\t\t\t\t\t0. EXIT " << endl
+		<< "\t\t\t\t===============================================" << endl;
+	cout << "Choose your option";
+
+	// Nhập lựa chọn
+	while (lc != '0')
 	{
-		int lc; // biến lựa chọn menu
-		do {
-			system("cls"); // xóa màn hình
-			cout << endl << endl
-				<< "\t\t\t\t================ ROAD CROSSING ================" << endl
-				<< "\t\t\t\t\t1. NEW GAME " << endl
-				<< "\t\t\t\t\t2. LOAD GAME " << endl
-				<< "\t\t\t\t\t3. SETTINGS " << endl
-				<< "\t\t\t\t\t0. EXIT " << endl
-				<< "\t\t\t\t===============================================" << endl;
-			// Nhập lựa chọn
-			cout << "Choose your option: ";
-			cin >> lc;
-			cin.ignore();
+		if (_kbhit())
+		{
+			lc = _getch();
 			switch (lc)
 			{
-			case 0: break;
-			case 1: game(); break;
-			case 2: load(); break;
-			case 3: setting(); break;
-			default:
-				//Nếu người dùng nhập lựa chọn không hợp lệ thì yêu cầu người dùng nhập lại 
-				cout << "\n ERROR! ";
-				system("pause");// dừng màn hình cho người dùng xembreak;
+			case '1': game(); break;
+			case '2': load(); break;
+			case '3': setting(); break;
 			}
-		} while (lc != 0 && lc != 1 && lc != 2 && lc != 3 && lc != 4);// Nếu điều kiện đúng thì sẽ lặp lại do{}while();
-
-		// Kiểm tra lựa chọn - thỏa lựa chọn nào thì thực hiện lựa chọn đó
-		if (lc == 0)
-		{
-			break; // Thoát khỏi vòng lặp vô tận while. Kết thúc chương trình
 		}
 	}
 }
@@ -85,70 +68,79 @@ void CGAME::game()
 {
 	system("cls");
 	w.HideCursor(); //Giấu con trỏ
-	//HideInput(); //Giấu input
 	char pressed;
-	thread gThread(UpdateGameFrame);		//Chạy hàm song song với main()
-	while (true)
+	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
+	bool escape = false;
+	while (!escape)
 	{
-		pressed = toupper(getchar());
-		if (!getPeople().isDead())	//Nếu người chơi chưa die, nhận nút di chuyển và các nút menu
-			switch (pressed)
-			{
-			case VK_ESCAPE:	//Phím ESC
-				exit(gThread.native_handle());
-			case 'P':
-				pause(gThread.native_handle());
-				break;
-			default:
-				resume(gThread.native_handle());
-				MOVING = pressed;	//Cập nhật bước di chuyển
-				break;
-			}
-		else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi
+		if (_kbhit())
 		{
-			if (pressed == 'Y')
-				start();
-			else
-				exit(gThread.native_handle());
+			pressed = _getch();
+			if (!p.isDead())	//Nếu người chơi chưa die, nhận nút di chuyển và các nút menu
+				switch (pressed)
+				{
+				case VK_ESCAPE:	//Phím ESC
+					escape = true;
+					exit(gThread);
+					break;
+				case 'P':
+					pause(gThread);
+					break;
+				default:
+					resume(gThread);
+					MOVING = pressed;	//Cập nhật bước di chuyển
+					break;
+				}
+			else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi
+			{
+				if (pressed == 'Y')
+					start();
+				else
+					exit(gThread);
+			}
 		}
 	}
 }
 void CGAME::setting()
 {
-	w.ShowCursor();
-	//ShowInput();
-	while (true)
-	{
-		int o;
-		system("cls");
-		cout
-			<< "================ SETTINGS ================" << endl
-			<< "1. Music: " << music << endl
-			<< "2. Sound: " << sound << endl
-			<< "3. Player head: " << p.getIcon() << endl
-			<< "4. Restore default settings" << endl
-			<< "0. Quit." << endl
-			<< "==========================================" << endl;
-		cout << "Choose your option: ";
-		cin >> o;
-		cin.ignore();
-		switch (o)
-		{
-		case 1: music = !music; break;
-		case 2: sound = !sound; break;
-		case 3: 
-			p.setIcon(p.getIcon() + 1);
-			break;
-		case 4: 
-			music = true;
-			sound = true;
-			p.setIcon(0);
-			break;
-		}
+	w.HideCursor();
+	
+	char o = 0;
 
-		if (o == 0)
-			break;
+	REFRESH:
+	system("cls");
+	cout
+		<< "================ SETTINGS ================" << endl
+		<< "1. Music: " << music << endl
+		<< "2. Sound: " << sound << endl
+		<< "3. Player head: " << p.getIcon(0) << endl
+		<< "4. Restore default settings" << endl
+		<< "0. Quit." << endl
+		<< "==========================================" << endl;
+	cout << "Choose your option";
+
+	while (o != '0')
+	{
+		if (_kbhit())
+		{
+			o = _getch();
+			switch (o)
+			{
+			case '1': music = !music; break;
+			case '2': sound = !sound; break;
+			case '3':
+				p.setIcon(p.getIcon() + 1);
+				break;
+			case '4':
+				music = true;
+				sound = true;
+				p.setIcon(0);
+				break;
+			}
+			goto REFRESH;
+		}
 	}
+
 	settingSave();
 	start();
 }
@@ -196,8 +188,8 @@ void CGAME::settingSave()
 
 void CGAME::load() { }
 void CGAME::save() { }
-void CGAME::pause(thread::native_handle_type handle) { }
-void CGAME::resume(thread::native_handle_type handle) { }
+void CGAME::pause(thread& t) { }
+void CGAME::resume(thread& t) { }
 
 void CGAME::updatePosPeople(char button) { }
 void CGAME::updatePosVehicle() { }

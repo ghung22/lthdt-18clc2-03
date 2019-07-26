@@ -18,9 +18,9 @@ void CPEOPLE::setAvatar(int i)
 	char c;
 	switch (icon)
 	{
-	case 1: c = char(235); break; //δ
-	case 2: c = char(229); break; //σ
-	default: c = 'o'; break;
+	case 1: c = P_HEAD1; break; //δ
+	case 2: c = P_HEAD2; break; //σ
+	default: c = P_HEAD0; break;
 	}
 	avatar[0] = { ' ', c };								// o				 o
 	avatar[1] = { char(218), char(197), char(217) };	//┌┼┘ //192 197 191 └┼┐
@@ -54,10 +54,21 @@ void CPEOPLE::setAvatar(int i)
 
 bool CPEOPLE::isDead()
 {
-	return true;
+	return !alive;
 }
 
-int CPEOPLE::getIcon() { return icon; }
+char CPEOPLE::getIcon(int mode)
+{
+	if (mode == 0)
+		switch (icon)
+		{
+		case 1: return P_HEAD1;
+		case 2: return P_HEAD2;
+		default: return P_HEAD0;
+		}
+	else
+		return icon;
+}
 int CPEOPLE::setIcon(int i)
 {
 	icon = i;

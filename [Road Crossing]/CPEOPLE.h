@@ -22,7 +22,7 @@ public:
 	//bool isFinish() { return true; }
 	bool isDead();
 
-	int getIcon();
+	char getIcon(int mode = 1); //0: return char, 1: return id
 	int setIcon(int i);
 
 private:

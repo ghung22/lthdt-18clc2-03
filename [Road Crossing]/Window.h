@@ -15,10 +15,6 @@ public:
 	void HideCursor();
 	void ShowCursor();
 
-	/*void ChangeInput(bool visible);
-	void HideInput();
-	void ShowInput();*/
-
 	Point GotoXY(int x, int y);
 	Point GetXY();
 	SMALL_RECT GetConsoleSize();

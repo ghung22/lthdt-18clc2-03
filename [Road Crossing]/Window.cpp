@@ -28,21 +28,6 @@ void Window::ChangeCursor(bool visible, short size)
 void Window::HideCursor() { ChangeCursor(false); }
 void Window::ShowCursor() { ChangeCursor(true); }
 
-//void Window::HideInput()
-//{
-//	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
-//	DWORD mode = 0;
-//	GetConsoleMode(input, &mode);
-//	SetConsoleMode(input, mode & (~ENABLE_ECHO_INPUT));
-//}
-//void Window::ShowInput()
-//{
-//	HANDLE input = GetStdHandle(STD_INPUT_HANDLE);
-//	DWORD mode = 0;
-//	GetConsoleMode(input, &mode);
-//	SetConsoleMode(input, mode & (ENABLE_ECHO_INPUT));
-//}
-
 Point Window::GotoXY(int x, int y)
 {
 	GetConsoleScreenBufferInfo(outputHandle, &scrBufInfo);

@@ -13,13 +13,9 @@ public:
 	CGAME();
 	//~CGAME();
 
-	CPEOPLE getPeople();
-	CVEHICLE* getVehicle();
-	CANIMAL* getAnimal();
-
 	void draw();
 	void reset();
-	void exit(thread::native_handle_type handle);
+	void exit(thread& t);
 
 	void start();
 	void game();
@@ -29,12 +25,14 @@ public:
 
 	void load();
 	void save();
-	void pause(thread::native_handle_type handle);
-	void resume(thread::native_handle_type handle);
+	void pause(thread& t);
+	void resume(thread& t);
 
 	void updatePosPeople(char button);
 	void updatePosVehicle();
 	void updatePosAnimal();
+
+	friend void UpdateGameFrame(CGAME* g);
 
 private:
 	vector<CTruck> truck;

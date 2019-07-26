@@ -1,7 +1,7 @@
 #include "COBJECT.h"
 #include "CGAME.h"
 
-Window w;
+Window wd;
 
 COBJECT::COBJECT()
 {
@@ -15,7 +15,7 @@ void COBJECT::draw(Point p)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		w.GotoXY(p.X, p.Y + i);
+		wd.GotoXY(p.X, p.Y + i);
 		cout << avatar[i];
 	}
 }
@@ -23,7 +23,7 @@ void COBJECT::erase(Point p)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		w.GotoXY(p.X - 4, p.Y + i);
+		wd.GotoXY(p.X - 4, p.Y + i);
 		cout << "          ";
 	}
 }
