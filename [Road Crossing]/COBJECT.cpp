@@ -27,3 +27,16 @@ void COBJECT::erase(Point p)
 		cout << "          ";
 	}
 }
+
+void COBJECT::moveXY(short x, short y)
+{
+	Point temp = pos;
+	temp.Y = (10 - pos.Y) * 5 + 2;
+
+	erase(temp);
+	pos.X += x;
+	pos.Y += y;
+
+	temp.Y = (10 - pos.Y) * 5 + 2;
+	draw(temp);
+}

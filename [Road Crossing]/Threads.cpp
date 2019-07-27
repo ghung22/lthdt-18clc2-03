@@ -18,11 +18,10 @@ void UpdateGameFrame(CGAME* g)
 {
 	int temp = 0;
 	Point _t = { 2,4 }, _c = { 16,2 },
-		_b = { 32,6 }, _d = { 4,8 },
-		_p = { 64, 16 };
+		_b = { 32,6 }, _d = { 4,8 };
 
-	g->p.draw(_p);
-	while (IS_RUNNING)
+	g->p.moveXY(0, 0);
+	while (!IS_RUNNING)
 	{
 		if (temp >= 50000)
 			break;

@@ -5,7 +5,6 @@
 #include <string>
 #include <conio.h>
 
-char MOVING;
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
 
@@ -47,7 +46,7 @@ void CGAME::start()
 		<< "\t\t\t\t\t3. SETTINGS " << endl
 		<< "\t\t\t\t\t0. EXIT " << endl
 		<< "\t\t\t\t===============================================" << endl;
-	cout << "Choose your option";
+	cout << "Choose your option" << endl << endl;
 
 	// Nhập lựa chọn
 	while (lc != '0')
@@ -68,6 +67,7 @@ void CGAME::game()
 {
 	system("cls");
 	w.HideCursor(); //Giấu con trỏ
+	w.SplitLanes();	//Chia làn
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	bool escape = false;
@@ -88,7 +88,7 @@ void CGAME::game()
 					break;
 				default:
 					resume(gThread);
-					MOVING = pressed;	//Cập nhật bước di chuyển
+					p.Move(pressed); //Các phím di chuyển người chơi
 					break;
 				}
 			else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi

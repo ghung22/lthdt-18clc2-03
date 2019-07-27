@@ -12,6 +12,7 @@
 #define CAR_Y 2
 #define BIRD_Y 4
 #define DINO_Y 8
+#define PEOPLE_Y 1
 
 //Tốc độ của các vật
 #define TRUCK_SPD 25

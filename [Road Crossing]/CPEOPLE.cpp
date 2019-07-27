@@ -1,15 +1,14 @@
 ﻿#include "CPEOPLE.h"
 #include "Constants.h"
 
+Window wp;
+
 CPEOPLE::CPEOPLE()
 {
-	HANDLE console = GetStdHandle(STD_OUTPUT_HANDLE);
-	CONSOLE_SCREEN_BUFFER_INFO cbsi;
-	GetConsoleScreenBufferInfo(console, &cbsi);
-
-	SMALL_RECT sizeRect = cbsi.srWindow;
+	SMALL_RECT sizeRect = wp.GetConsoleSize();
 	icon = 0;
-	pos = { sizeRect.Right / 2, sizeRect.Bottom };
+	//CPEOPLE ko cần dùng speed nên ko cần đặt giá trị
+	pos = { sizeRect.Right / 2, PEOPLE_Y };
 	alive = true;
 	setAvatar(0);
 }
@@ -26,6 +25,25 @@ void CPEOPLE::setAvatar(int i)
 	avatar[1] = { char(218), char(197), char(217) };	//┌┼┘ //192 197 191 └┼┐
 	avatar[2] = { ' ', char(227) };						// π				 π
 }
+
+void CPEOPLE::Move(char button)
+{
+	switch (button)
+	{
+	case 'W': case 'w': case VK_UP:
+		up(); break;
+	case 'A': case 'a': case VK_LEFT:
+		left(); break;
+	case 'S': case 's': case VK_DOWN:
+		down(); break;
+	case 'D': case 'd': case VK_RIGHT:
+		right(); break;
+	}
+}
+void CPEOPLE::up()		{ if (1 <= pos.Y && pos.Y < 9)								moveXY(0, 1); }
+void CPEOPLE::left()	{ if (4 < pos.X && pos.X <= wp.GetConsoleSize().Right - 5)	moveXY(-1, 0); }
+void CPEOPLE::down()	{ if (1 < pos.Y && pos.Y <= 9)								moveXY(0, -1); }
+void CPEOPLE::right()	{ if (4 <= pos.X && pos.X < wp.GetConsoleSize().Right - 5)	moveXY(1, 0); }
 
 //bool CPEOPLE::inContact(CVEHICLE v)
 //{
@@ -52,10 +70,7 @@ void CPEOPLE::setAvatar(int i)
 //	}
 //}
 
-bool CPEOPLE::isDead()
-{
-	return !alive;
-}
+bool CPEOPLE::isDead() { return !alive; }
 
 char CPEOPLE::getIcon(int mode)
 {

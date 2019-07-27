@@ -19,6 +19,9 @@ public:
 	Point GetXY();
 	SMALL_RECT GetConsoleSize();
 
+	void DrawGameMenu();
+	void SplitLanes();
+
 private:
 	HANDLE inputHandle, outputHandle;
 	HWND window;							//pointer to console window

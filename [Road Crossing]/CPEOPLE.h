@@ -8,11 +8,11 @@ public:
 	CPEOPLE();
 	void setAvatar(int i);
 
-	//void Move(char button) { } //Gọi 4 hàm hướng đi bên dưới
-	//void up() { }
-	//void left() { }
-	//void right() { }
-	//void down() { }
+	void Move(char button); //Gọi 4 hàm hướng đi bên dưới
+	void up();
+	void left();
+	void down();
+	void right();
 
 	//bool inContact(CVEHICLE v);
 	//bool inContact(CANIMAL a);
