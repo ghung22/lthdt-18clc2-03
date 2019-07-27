@@ -11,6 +11,7 @@ CPEOPLE::CPEOPLE()
 	pos = { sizeRect.Right / 2, PEOPLE_Y };
 	alive = true;
 	setAvatar(0);
+	lv = 0;
 }
 void CPEOPLE::setAvatar(int i)
 {
@@ -92,3 +93,5 @@ int CPEOPLE::setIcon(int i)
 	setAvatar(i);
 	return icon;
 }
+
+unsigned CPEOPLE::getLevel() { return lv; }

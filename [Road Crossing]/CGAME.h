@@ -13,25 +13,30 @@ public:
 	CGAME();
 	//~CGAME();
 
-	void draw();
+	//Các hàm mang tính global đến game screen
 	void reset();
 	void exit(thread& t);
 
+	//Các hàm menu
 	void start();
 	void game();
 	void setting();
 	void settingLoad();
 	void settingSave();
 
+	//Các hàm liên quan đến file trong game screen
 	void load();
 	void save();
 	void pause(thread& t);
 	void resume(thread& t);
 
-	void updatePosPeople(char button);
-	void updatePosVehicle();
-	void updatePosAnimal();
+	//Các hàm update trong game screen
+	void UpdateGameInfo();
+	void UpdatePosPeople(char button);
+	void UpdatePosVehicle();
+	void UpdatePosAnimal();
 
+	//Hàm để trong thread
 	friend void UpdateGameFrame(CGAME* g);
 
 private:

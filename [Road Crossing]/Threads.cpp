@@ -13,7 +13,7 @@ void exitGame(thread& t)
 	IS_RUNNING = false;	//Stop update frames
 	t.join();			//Join main thread
 }
-//GetKeyState()
+
 void UpdateGameFrame(CGAME* g)
 {
 	int temp = 0;

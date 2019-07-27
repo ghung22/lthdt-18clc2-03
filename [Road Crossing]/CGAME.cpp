@@ -23,7 +23,6 @@ CGAME::CGAME()
 	sound = 1;
 }
 
-void CGAME::draw() { }
 void CGAME::reset() { }
 void CGAME::exit(thread& t)
 {
@@ -68,6 +67,7 @@ void CGAME::game()
 	system("cls");
 	w.HideCursor(); //Giấu con trỏ
 	w.SplitLanes();	//Chia làn
+	UpdateGameInfo();
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	bool escape = false;
@@ -191,6 +191,15 @@ void CGAME::save() { }
 void CGAME::pause(thread& t) { }
 void CGAME::resume(thread& t) { }
 
-void CGAME::updatePosPeople(char button) { }
-void CGAME::updatePosVehicle() { }
-void CGAME::updatePosAnimal() { }
+void CGAME::UpdateGameInfo()
+{
+	w.GotoXY(3, 2);
+	cout << "Level: " << p.getLevel();
+	w.GotoXY(32, 2);
+	cout << "Press WASD to move";
+	w.GotoXY(32, 3);
+	cout << "ESC to exit, P to pause";
+}
+void CGAME::UpdatePosPeople(char button) { }
+void CGAME::UpdatePosVehicle() { }
+void CGAME::UpdatePosAnimal() { }

@@ -25,7 +25,10 @@ public:
 	char getIcon(int mode = 1); //0: return char, 1: return id
 	int setIcon(int i);
 
+	unsigned getLevel();
+
 private:
 	int icon;
 	bool alive;
+	unsigned lv;
 };
