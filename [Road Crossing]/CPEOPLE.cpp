@@ -136,3 +136,4 @@ int CPEOPLE::setIcon(int i)
 }
 
 unsigned CPEOPLE::getLevel() { return lv; }
+unsigned CPEOPLE::setLevel(unsigned l) { return lv = l; }

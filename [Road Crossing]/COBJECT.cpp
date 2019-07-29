@@ -1,4 +1,4 @@
-#include "COBJECT.h"
+﻿#include "COBJECT.h"
 #include "CGAME.h"
 
 Window wd;
@@ -30,6 +30,7 @@ void COBJECT::erase(Point p)
 
 void COBJECT::moveXY(short x, short y)
 {
+	//Di chuyển y theo làn, ko phải theo dòng kí tự trên console
 	Point temp = pos;
 	temp.Y = (10 - pos.Y) * 5 + 2;
 

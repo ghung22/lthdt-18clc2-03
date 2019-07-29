@@ -195,8 +195,10 @@ void CGAME::load()
 		cout << "Error loading file";
 		return;
 	}
-	fin.read((char*)p.getLevel(), sizeof(int));
+	int temp;
+	fin.read((char*)&temp, sizeof(int));
 	fin.close();
+	p.setLevel(temp);
 }
 void CGAME::save()
 {

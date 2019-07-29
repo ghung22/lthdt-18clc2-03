@@ -27,6 +27,7 @@ public:
 	int setIcon(int i);
 
 	unsigned getLevel();
+	unsigned setLevel(unsigned l);
 
 private:
 	int icon;
