@@ -9,6 +9,7 @@ public:
 	void setAvatar(int i);
 
 	void Move(char button); //Gọi 4 hàm hướng đi bên dưới
+	void arms(); //Chuyển động tay
 	void up();
 	void left();
 	void down();

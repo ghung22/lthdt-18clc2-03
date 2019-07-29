@@ -1,9 +1,5 @@
 ﻿#include "CGAME.h"
 
-/* RETURN VALUE LIST:
-	0	-	Ko vấn đề.
-*/
-
 CGAME* game;
 
 int main()

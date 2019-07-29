@@ -32,9 +32,6 @@ public:
 
 	//Các hàm update trong game screen
 	void UpdateGameInfo();
-	void UpdatePosPeople(char button);
-	void UpdatePosVehicle();
-	void UpdatePosAnimal();
 
 	//Hàm để trong thread
 	friend void UpdateGameFrame(CGAME* g);

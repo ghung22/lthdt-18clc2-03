@@ -41,10 +41,51 @@ void CPEOPLE::Move(char button)
 		right(); break;
 	}
 }
-void CPEOPLE::up()		{ if (1 <= pos.Y && pos.Y < 9)								moveXY(0, 1); }
-void CPEOPLE::left()	{ if (4 < pos.X && pos.X <= wp.GetConsoleSize().Right - 5)	moveXY(-1, 0); }
-void CPEOPLE::down()	{ if (1 < pos.Y && pos.Y <= 9)								moveXY(0, -1); }
-void CPEOPLE::right()	{ if (4 <= pos.X && pos.X < wp.GetConsoleSize().Right - 5)	moveXY(1, 0); }
+void CPEOPLE::arms()
+{
+	if (avatar[1][0] == char(218))
+	{
+		avatar[1][0] = char(192);
+		avatar[1][2] = char(191);
+	}
+	else
+	{
+		avatar[1][0] = char(218);
+		avatar[1][2] = char(217);
+	}
+}
+void CPEOPLE::up()
+{
+	if (1 <= pos.Y && pos.Y < 9)
+	{
+		arms();
+		moveXY(0, 1);
+	}
+}
+void CPEOPLE::left()
+{
+	if (4 < pos.X && pos.X <= wp.GetConsoleSize().Right - 5)
+	{
+		arms();
+		moveXY(-1, 0);
+	}
+}
+void CPEOPLE::down()
+{
+	if (1 < pos.Y && pos.Y <= 9)
+	{
+		arms();
+		moveXY(0, -1);
+	}
+}
+void CPEOPLE::right()
+{
+	if (4 <= pos.X && pos.X < wp.GetConsoleSize().Right - 5)
+	{
+		arms();
+		moveXY(1, 0);
+	}
+}
 
 //bool CPEOPLE::inContact(CVEHICLE v)
 //{

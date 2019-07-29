@@ -186,8 +186,31 @@ void CGAME::settingSave()
 	fout.close();
 }
 
-void CGAME::load() { }
-void CGAME::save() { }
+void CGAME::load()
+{
+	w.GotoXY(5, 40);
+	ifstream fin("roadcrossing.sav", ios::binary);
+	if (fin.fail())
+	{
+		cout << "Error loading file";
+		return;
+	}
+	fin.read((char*)p.getLevel(), sizeof(int));
+	fin.close();
+}
+void CGAME::save()
+{
+	w.GotoXY(5, 40);
+	ofstream fout("roadcrossing.sav", ios::binary);
+	if (fout.fail())
+	{
+		cout << "Error saving file";
+		return;
+	}
+	fout.write((char*)p.getLevel(), sizeof(int));
+	fout.close();
+	cout << "Saved to roadcrossing.sav";
+}
 void CGAME::pause(thread& t) { }
 void CGAME::resume(thread& t) { }
 
@@ -200,6 +223,3 @@ void CGAME::UpdateGameInfo()
 	w.GotoXY(32, 3);
 	cout << "ESC to exit, P to pause";
 }
-void CGAME::UpdatePosPeople(char button) { }
-void CGAME::UpdatePosVehicle() { }
-void CGAME::UpdatePosAnimal() { }
