@@ -5,7 +5,6 @@
 class CANIMAL : public COBJECT
 {
 public:
-	CANIMAL();
 	CANIMAL(int y, int spd);
 	virtual void speak();
 

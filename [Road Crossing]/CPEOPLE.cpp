@@ -26,6 +26,15 @@ void CPEOPLE::setAvatar(int i)
 	avatar[1] = { char(218), char(197), char(217) };	//┌┼┘ //192 197 191 └┼┐
 	avatar[2] = { ' ', char(227) };						// π				 π
 }
+void CPEOPLE::reset()
+{
+	SMALL_RECT sizeRect = wp.GetConsoleSize();
+	icon = 0;
+	pos = { sizeRect.Right / 2, PEOPLE_Y };
+	alive = true;
+	setAvatar(0);
+	lv = 0;
+}
 
 void CPEOPLE::Move(char button)
 {

@@ -7,6 +7,7 @@ class CPEOPLE : public COBJECT
 public:
 	CPEOPLE();
 	void setAvatar(int i);
+	void reset(); //reset các biến về default
 
 	void Move(char button); //Gọi 4 hàm hướng đi bên dưới
 	void arms(); //Chuyển động tay

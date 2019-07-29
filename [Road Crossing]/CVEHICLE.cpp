@@ -1,7 +1,6 @@
 ﻿#include "CVEHICLE.h"
 
-CVEHICLE::CVEHICLE() { pos.X = pos.Y = speed = 0; }
-CVEHICLE::CVEHICLE(int y, int spd) { pos.Y = y; speed = spd; }
+CVEHICLE::CVEHICLE(int y, int spd) {pos.Y = y; speed = spd; }
 CTruck::CTruck() : CVEHICLE(TRUCK_Y, TRUCK_SPD)
 {
 	avatar[0] = { char(218), char(196), char(196), char(191) };			//┌──┐

@@ -1,7 +1,6 @@
 ﻿#include "CANIMAL.h"
 
-CANIMAL::CANIMAL() { pos.X = pos.Y = speed = 0; }
-CANIMAL::CANIMAL(int y, int spd) { pos.Y = y; speed = spd; }
+CANIMAL::CANIMAL(int y, int spd) {pos.Y = y; speed = spd; }
 CBird::CBird() : CANIMAL(BIRD_Y, BIRD_SPD)
 {
 	avatar[0] = { char(169), char(250), char(170) };	//⌐·¬	-·-

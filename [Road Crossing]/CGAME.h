@@ -31,12 +31,15 @@ public:
 	void resume(thread& t);
 
 	//Các hàm update trong game screen
-	void UpdateGameInfo();
+	void UpdateGameInfo(); //in thông tin
 
 	//Hàm để trong thread
 	friend void UpdateGameFrame(CGAME* g);
 
 private:
+	void initObjects(); //tạo objects mới
+	void clearObjects(); //dọn objects cũ
+
 	vector<CTruck> truck;
 	vector<CCar> car;
 	vector<CDino> dino;

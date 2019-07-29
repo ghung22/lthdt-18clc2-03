@@ -5,7 +5,6 @@
 class CVEHICLE : public COBJECT
 {
 public:
-	CVEHICLE();
 	CVEHICLE(int y, int spd);
 
 	bool inContact(Point ppos);

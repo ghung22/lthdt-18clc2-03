@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #include <Windows.h>
 
@@ -9,7 +9,7 @@ class Window
 public:
 	Window();
 
-	void LockWinSize();
+	void LockWinSize(); //Khoá thay đổi size màn hình
 
 	void ChangeCursor(bool visible, short size = 1);
 	void HideCursor();
@@ -19,8 +19,8 @@ public:
 	Point GetXY();
 	SMALL_RECT GetConsoleSize();
 
-	void DrawGameMenu();
-	void SplitLanes();
+	void DrawGameMenu(); //Vẽ khung thông tin trên đầu
+	void SplitLanes(); //Chia làn
 
 private:
 	HANDLE inputHandle, outputHandle;

@@ -10,15 +10,6 @@ extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file 
 
 CGAME::CGAME()
 {
-	CTruck t;
-	CCar c;
-	CBird b;
-	CDino d;
-	truck.push_back(t);
-	car.push_back(c);
-	dino.push_back(d);
-	bird.push_back(b);
-
 	music = 1;
 	sound = 1;
 }
@@ -33,8 +24,8 @@ void CGAME::exit(thread& t)
 void CGAME::start()
 {
 	settingLoad();
-	w.LockWinSize(); //Khoá thay đổi size màn hình
-	w.HideCursor(); //Ẩn con trỏ
+	w.LockWinSize();
+	w.HideCursor();
 
 	char lc = 0; // biến lựa chọn menu
 	system("cls"); // xóa màn hình
@@ -65,9 +56,10 @@ void CGAME::start()
 void CGAME::game()
 {
 	system("cls");
-	w.HideCursor(); //Giấu con trỏ
-	w.SplitLanes();	//Chia làn
+	w.HideCursor();
+	w.SplitLanes();
 	UpdateGameInfo();
+	initObjects();
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	bool escape = false;
@@ -224,4 +216,36 @@ void CGAME::UpdateGameInfo()
 	cout << "Press WASD to move";
 	w.GotoXY(32, 3);
 	cout << "ESC to exit, P to pause";
+}
+
+void CGAME::initObjects()
+{
+	clearObjects();
+
+	//thêm một object vào làn đường mỗi 2 level
+	unsigned level = p.getLevel(),
+		add = level / 2;
+	for (unsigned i = 0; i <= add; i++)
+	{
+		CTruck t;
+		CCar c;
+		CDino d;
+		CBird b;
+		truck.push_back(t);
+		car.push_back(c);
+		dino.push_back(d);
+		bird.push_back(b);
+	}
+}
+void CGAME::clearObjects()
+{
+	for (int i = 0; i < truck.size(); i++)
+		truck.pop_back();
+	for (int i = 0; i < car.size(); i++)
+		car.pop_back();
+	for (int i = 0; i < dino.size(); i++)
+		dino.pop_back();
+	for (int i = 0; i < bird.size(); i++)
+		bird.pop_back();
+	p.reset();
 }
