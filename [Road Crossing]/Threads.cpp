@@ -27,8 +27,17 @@ void UpdateGameFrame(CGAME* g)
 
 	while (IS_RUNNING)
 	{
-		if (temp >= 50000)
+		if (temp >= 50000) //Hết time, thua
 			break;
+
+		if (g->p.getPos().Y >= 9) //Người chơi đến đích, tăng level
+		{
+			unsigned level = g->p.getLevel();
+			if (level < MAX_LEVEL)
+				g->p.setLevel(g->p.getLevel() + 1);
+			g->reset(false);
+			temp = 0;
+		}
 
 		if (temp % 20 == 0)
 		{

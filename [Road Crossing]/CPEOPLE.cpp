@@ -122,6 +122,7 @@ void CPEOPLE::right()
 //}
 
 bool CPEOPLE::isDead() { return !alive; }
+Point CPEOPLE::getPos() { return pos; }
 
 char CPEOPLE::getIcon(int mode)
 {

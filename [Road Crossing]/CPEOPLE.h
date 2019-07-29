@@ -21,8 +21,8 @@ public:
 	//CVEHICLE nowContact(const CVEHICLE*& v); //Trả về vehicle đang va chạm với people
 	//CANIMAL nowContact(const CANIMAL*& a);
 
-	//bool isFinish() { return true; }
 	bool isDead();
+	Point getPos();
 
 	char getIcon(int mode = 1); //0: return char, 1: return id
 	int setIcon(int i);

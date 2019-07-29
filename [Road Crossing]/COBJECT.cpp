@@ -23,8 +23,8 @@ void COBJECT::erase(Point p)
 {
 	for (int i = 0; i < 3; i++)
 	{
-		wd.GotoXY(p.X, p.Y + i);
-		cout << "     ";
+		wd.GotoXY(p.X - 4, p.Y + i);
+		cout << "          ";
 	}
 }
 

@@ -7,6 +7,7 @@
 
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
+extern bool IS_RUNNING;
 
 CGAME::CGAME()
 {
@@ -14,7 +15,11 @@ CGAME::CGAME()
 	sound = 1;
 }
 
-void CGAME::reset() { }
+void CGAME::reset(bool loss)
+{
+	initObjects(loss);
+	UpdateGameInfo();
+}
 void CGAME::exit(thread& t)
 {
 	exitGame(t);
@@ -58,10 +63,11 @@ void CGAME::game()
 	system("cls");
 	w.HideCursor();
 	w.SplitLanes();
-	UpdateGameInfo();
 	initObjects();
+	UpdateGameInfo();
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
+	IS_RUNNING = true;
 	bool escape = false;
 	while (!escape)
 	{
@@ -218,9 +224,9 @@ void CGAME::UpdateGameInfo()
 	cout << "ESC to exit, P to pause";
 }
 
-void CGAME::initObjects()
+void CGAME::initObjects(bool resetP)
 {
-	clearObjects();
+	clearObjects(resetP);
 
 	//thêm một object vào làn đường mỗi 2 level
 	unsigned level = p.getLevel(),
@@ -237,7 +243,7 @@ void CGAME::initObjects()
 		bird.push_back(b);
 	}
 }
-void CGAME::clearObjects()
+void CGAME::clearObjects(bool resetP)
 {
 	for (int i = 0; i < truck.size(); i++)
 		truck.pop_back();
@@ -247,5 +253,18 @@ void CGAME::clearObjects()
 		dino.pop_back();
 	for (int i = 0; i < bird.size(); i++)
 		bird.pop_back();
+
+	unsigned level = p.getLevel();
+	Point temp = p.getPos();
+
 	p.reset();
+
+	if (!resetP) //Khi người chơi thắng trước đó, xoá vị trí hiện tại và in vị trí mới
+	{
+		temp.Y = (10 - temp.Y) * 5 + 2;
+		p.erase(temp);
+		p.setLevel(level);
+		temp.Y = (10 - p.getPos().Y) * 5 + 2;
+		p.draw(temp);
+	}
 }

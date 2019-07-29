@@ -14,7 +14,7 @@ public:
 	//~CGAME();
 
 	//Các hàm mang tính global đến game screen
-	void reset();
+	void reset(bool loss = true);
 	void exit(thread& t);
 
 	//Các hàm menu
@@ -37,8 +37,8 @@ public:
 	friend void UpdateGameFrame(CGAME* g);
 
 private:
-	void initObjects(); //tạo objects mới
-	void clearObjects(); //dọn objects cũ
+	void initObjects(bool resetP = true); //tạo objects mới
+	void clearObjects(bool resetP); //dọn objects cũ
 
 	vector<CTruck> truck;
 	vector<CCar> car;
