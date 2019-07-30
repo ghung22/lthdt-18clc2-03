@@ -1,7 +1,7 @@
 ﻿#pragma comment (lib, "winmm.lib")
 #include "CGAME.h"
 
-CGAME* game;
+static CGAME* game;
 
 int main()
 {

@@ -52,4 +52,9 @@ void COBJECT::moveXY(short x, short y)
 	temp.Y = (10 - pos.Y) * 5 + 2;
 	draw(temp);
 }
-void COBJECT::speak(CGAME* g) { if (g->getSound()) PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME); }
+void COBJECT::speak()
+{
+	static CGAME* g;
+	if (g->getSound())
+		PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME);
+}

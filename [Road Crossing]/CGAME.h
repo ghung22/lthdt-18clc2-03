@@ -35,6 +35,8 @@ public:
 	//Hàm để trong thread
 	friend void UpdateGameFrame(CGAME* g);
 
+	bool getSound();
+
 private:
 	void initObjects(bool resetP = true); //tạo objects mới
 	void clearObjects(bool resetP); //dọn objects cũ
