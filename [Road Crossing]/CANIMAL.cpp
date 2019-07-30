@@ -1,51 +1,33 @@
 ﻿#include "CANIMAL.h"
-
-#include <iostream>
-using namespace std;
+#include <mmsystem.h>
+CANIMAL::CANIMAL() { pos.X = pos.Y = speed = 0; }
+CANIMAL::CANIMAL(int y, int spd) { pos.Y = y; speed = spd; }
+CBird::CBird() : CANIMAL(BIRD_Y, BIRD_SPD)
+{
+	avatar[0] = { char(169), char(250), char(170) };	//⌐·¬	-·-
+}
+CDino::CDino() : CANIMAL(DINO_Y, DINO_SPD)
+{
+	avatar[0] = { ' ', char(244) };			// ⌠
+	avatar[1] = "(0)";						//(0)
+	avatar[2] = { char(217), 'L', 'L' };	//┘LL
+}
 
 bool CANIMAL::inContact(Point ppos)
 {
-	return pos.x <= ppos.x && ppos.x <= pos.x + 2
-		&& pos.y == ppos.y;
+	return pos.X <= ppos.X && ppos.X <= pos.X + 2
+		&& pos.Y == ppos.Y;
 	//Việc xét điểm y còn tuỳ vào kích cỡ của animal
 }
 
-CANIMAL::CANIMAL()
-{
-	pos.x = 0;
-	pos.y = 0;
-	speed = 0;
-}
-
-CANIMAL::CANIMAL(int y, int s_speed)
-{
-	pos.x = 0;
-	pos.y = y;
-	speed = s_speed;
-}
-
-CBird::CBird() : CANIMAL(1, 20){}
-
-CDino::CDino(): CANIMAL(3, 30){}
-
-void CANIMAL::draw() { }
-void CBird::draw(char s, COORD pos)
-{
-	GotoXY(pos.X, pos.Y);
-	cout << ' ' << ' ' << ' ' << s;
-	GotoXY(pos.X, pos.Y + 1);
-	cout << s;
-	GotoXY(pos.X, pos.Y + 2);
-	cout << ' ' << ' ' << s;
-}
-void CDino::draw(char s, COORD pos)
-{
-	GotoXY(pos.X, pos.Y);
-	cout << s;
-	GotoXY(pos.X, pos.Y + 1);
-	cout << s << s;
-	GotoXY(pos.X, pos.Y + 2);
-	cout << s << s << s;
-}
-
 void CANIMAL::speak() { }
+
+void CBird::speak()
+{
+	PlaySound("C:\\Users\\ACER\\Documents\\GitHub\\lthdt-18clc2-03\\[Road Crossing]\\sound\\Bird.wav", NULL, SND_SYNC);
+}
+
+void CDino::speak()
+{
+	PlaySound("C:\\Users\\ACER\\Documents\\GitHub\\lthdt-18clc2-03\\[Road Crossing]\\sound\\Dino.wav", NULL, SND_SYNC);
+}

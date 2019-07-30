@@ -1,31 +1,29 @@
 ﻿#pragma once
 
-#include "Window.h"
+#include "COBJECT.h"
 
-class CVEHICLE
+class CVEHICLE : public COBJECT
 {
 public:
 	CVEHICLE();
-	CVEHICLE(int y, int s_speed);		//Đặt pos và speed cho class con
-	//CVEHICLE(int speedX, int speedY);							//Đặt speed cho class con
-
-	virtual void draw();
-
+	CVEHICLE(int y, int spd);
+	virtual void horn() {};
 	bool inContact(Point ppos);
-
-protected:
-	Point pos;
-	int speed;
 };
 class CTruck : public CVEHICLE
 {
 public:
 	CTruck();
-	void draw(char s, COORD pos);
+	void horn();
 };
 class CCar : public CVEHICLE
 {
 public:
 	CCar();
-	void draw(char s, COORD pos);
+	void horn();
+};
+
+class TrafficLight
+{
+
 };
