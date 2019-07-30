@@ -4,17 +4,14 @@
 #include <fstream>
 #include <string>
 #include <conio.h>
+#include <mmsystem.h>
 
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
 extern bool IS_RUNNING;
 bool IS_PAUSED;
 
-CGAME::CGAME()
-{
-	music = 1;
-	sound = 1;
-}
+CGAME::CGAME() { sound = true; }
 
 void CGAME::reset(bool loss)
 {
@@ -29,6 +26,7 @@ void CGAME::exit(thread& t)
 
 void CGAME::start()
 {
+	PlaySound(0, 0, 0); //mute sound
 	settingLoad();
 	w.LockWinSize();
 	w.HideCursor();
@@ -61,6 +59,7 @@ void CGAME::start()
 }
 void CGAME::game()
 {
+	PlaySound(0, 0, 0); //mute sound
 	system("cls");
 	w.HideCursor();
 	w.SplitLanes();
@@ -113,10 +112,9 @@ void CGAME::setting()
 	system("cls");
 	cout
 		<< "================ SETTINGS ================" << endl
-		<< "1. Music: " << music << endl
-		<< "2. Sound: " << sound << endl
-		<< "3. Player head: " << p.getIcon(0) << endl
-		<< "4. Restore default settings" << endl
+		<< "1. Music and Sounds: " << sound << endl
+		<< "2. Player head: " << p.getIcon(0) << endl
+		<< "3. Restore default settings" << endl
 		<< "0. Quit." << endl
 		<< "==========================================" << endl;
 	cout << "Choose your option";
@@ -128,13 +126,11 @@ void CGAME::setting()
 			o = _getch();
 			switch (o)
 			{
-			case '1': music = !music; break;
-			case '2': sound = !sound; break;
-			case '3':
+			case '1': sound = !sound; break;
+			case '2':
 				p.setIcon(p.getIcon() + 1);
 				break;
-			case '4':
-				music = true;
+			case '3':
 				sound = true;
 				p.setIcon(0);
 				break;
@@ -144,6 +140,9 @@ void CGAME::setting()
 	}
 
 	settingSave();
+	if (!sound)
+		PlaySound(0, 0, 0); //mute sound
+
 	start();
 }
 void CGAME::settingLoad()
@@ -161,9 +160,7 @@ void CGAME::settingLoad()
 		if (temp.length() > 0)
 		{
 			char c = temp[temp.length() - 1];
-			if (temp.find("bMusic") != string::npos)
-				music = c - '0';
-			else if (temp.find("bSound") != string::npos)
+			if (temp.find("bSound") != string::npos)
 				sound = c - '0';
 			else if (temp.find("cPlayerCharacter") != string::npos)
 				p.setIcon(c);
@@ -179,11 +176,8 @@ void CGAME::settingSave()
 		cout << "Failed to save settings to file" << endl;
 		return;
 	}
-	fout << "[Media]" << endl
-		<< "bMusic=" << music << endl
+	fout << "[Setting]" << endl
 		<< "bSound=" << sound << endl
-		<< endl
-		<< "[Main]" << endl
 		<< "cPlayerCharacter=" << p.getIcon() << endl;
 	fout.close();
 }
@@ -249,13 +243,13 @@ void CGAME::initObjects(bool resetP)
 }
 void CGAME::clearObjects(bool resetP)
 {
-	for (int i = 0; i < truck.size(); i++)
+	for (unsigned i = 0; i < truck.size(); i++)
 		truck.pop_back();
-	for (int i = 0; i < car.size(); i++)
+	for (unsigned i = 0; i < car.size(); i++)
 		car.pop_back();
-	for (int i = 0; i < dino.size(); i++)
+	for (unsigned i = 0; i < dino.size(); i++)
 		dino.pop_back();
-	for (int i = 0; i < bird.size(); i++)
+	for (unsigned i = 0; i < bird.size(); i++)
 		bird.pop_back();
 
 	unsigned level = p.getLevel();
@@ -272,3 +266,5 @@ void CGAME::clearObjects(bool resetP)
 		p.draw(temp);
 	}
 }
+
+bool CGAME::getSound() { return sound; }

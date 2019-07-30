@@ -6,7 +6,6 @@ class CANIMAL : public COBJECT
 {
 public:
 	CANIMAL(int y, int spd);
-	virtual void speak();
 
 	bool inContact(Point ppos);
 };

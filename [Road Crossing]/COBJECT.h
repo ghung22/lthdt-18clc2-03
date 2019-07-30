@@ -16,7 +16,7 @@ public:
 	void erase(Point p);
 
 	void moveXY(short x, short y);
-	void speak();
+	void speak(CGAME* g);
 
 protected:
 	Point pos;				//y tính theo số thứ tự làn đường (ko phải toạ độ trên màn hình!!)

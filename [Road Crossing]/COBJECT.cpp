@@ -1,4 +1,8 @@
-﻿#include "COBJECT.h"
+﻿//Cần thêm winmm.lib vào Linker trong Project Properties để hàm speak hoạt động
+#include <Windows.h>
+#include <mmsystem.h>
+
+#include "COBJECT.h"
 #include "CGAME.h"
 
 Window wd;
@@ -9,6 +13,7 @@ COBJECT::COBJECT()
 	speed = 0;
 	for (int i = 0; i < 3; i++)
 		avatar.push_back("");
+	voice = "Data\\Sounds\\";
 }
 
 void COBJECT::draw(Point p)
@@ -47,3 +52,4 @@ void COBJECT::moveXY(short x, short y)
 	temp.Y = (10 - pos.Y) * 5 + 2;
 	draw(temp);
 }
+void COBJECT::speak(CGAME* g) { if (g->getSound()) PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME); }

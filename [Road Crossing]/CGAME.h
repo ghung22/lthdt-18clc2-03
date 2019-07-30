@@ -11,7 +11,6 @@ class CGAME
 {
 public:
 	CGAME();
-	//~CGAME();
 
 	//Các hàm mang tính global đến game screen
 	void reset(bool loss = true);
@@ -46,6 +45,5 @@ private:
 	vector<CBird> bird;
 	CPEOPLE p;
 
-	bool music;
 	bool sound;
 };

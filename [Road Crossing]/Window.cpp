@@ -42,7 +42,7 @@ void Window::ChangeCursor(bool visible, short size)
 void Window::HideCursor() { ChangeCursor(false); }
 void Window::ShowCursor() { ChangeCursor(true); }
 
-Point Window::GotoXY(int x, int y)
+Point Window::GotoXY(short x, short y)
 {
 	GetConsoleScreenBufferInfo(outputHandle, &scrBufInfo);
 	while (x > scrBufInfo.srWindow.Right)

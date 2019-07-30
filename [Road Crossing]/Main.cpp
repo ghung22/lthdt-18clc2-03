@@ -1,4 +1,5 @@
-﻿#include "CGAME.h"
+﻿#pragma comment (lib, "winmm.lib")
+#include "CGAME.h"
 
 CGAME* game;
 
