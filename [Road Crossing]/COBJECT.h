@@ -16,9 +16,11 @@ public:
 	void erase(Point p);
 
 	void moveXY(short x, short y);
+	void speak();
 
 protected:
 	Point pos;				//y tính theo số thứ tự làn đường (ko phải toạ độ trên màn hình!!)
 	int speed;				//Giá trị càng nhỏ, khoảng cách giữa step vẽ càng ngắn → Di chuyển càng nhanh
 	vector<string> avatar;	//Chứa ngoại hình của các vật (có 3 dòng)
+	string voice;			//Âm thanh của object để nói hoặc kêu
 };

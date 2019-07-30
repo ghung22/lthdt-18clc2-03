@@ -26,6 +26,8 @@ void COBJECT::erase(Point p)
 		wd.GotoXY(p.X - 4, p.Y + i);
 		cout << "          ";
 	}
+	wd.GotoXY(p.X - 4, p.Y + 3); //Phòng việc xoá mất làn đường
+	cout << '_';
 }
 
 void COBJECT::moveXY(short x, short y)

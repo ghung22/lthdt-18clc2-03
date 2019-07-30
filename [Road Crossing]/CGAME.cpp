@@ -8,6 +8,7 @@
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
 extern bool IS_RUNNING;
+bool IS_PAUSED;
 
 CGAME::CGAME()
 {
@@ -68,12 +69,13 @@ void CGAME::game()
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	IS_RUNNING = true;
+	IS_PAUSED = false;
 	bool escape = false;
 	while (!escape)
 	{
 		if (_kbhit())
 		{
-			pressed = _getch();
+			pressed = toupper(_getch());
 			if (!p.isDead())	//Nếu người chơi chưa die, nhận nút di chuyển và các nút menu
 				switch (pressed)
 				{
@@ -82,15 +84,17 @@ void CGAME::game()
 					exit(gThread);
 					break;
 				case 'P':
-					pause(gThread);
+					pause();
 					break;
 				default:
-					resume(gThread);
+					resume();
 					p.Move(pressed); //Các phím di chuyển người chơi
 					break;
 				}
 			else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi
 			{
+				w.GotoXY(40, 10);
+				cout << "Lost. Press Y to play again.";
 				if (pressed == 'Y')
 					start();
 				else
@@ -211,8 +215,8 @@ void CGAME::save()
 	fout.close();
 	cout << "Saved to roadcrossing.sav";
 }
-void CGAME::pause(thread& t) { }
-void CGAME::resume(thread& t) { }
+void CGAME::pause() { IS_PAUSED = true; }
+void CGAME::resume() { IS_PAUSED = false; }
 
 void CGAME::UpdateGameInfo()
 {

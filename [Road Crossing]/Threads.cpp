@@ -6,6 +6,7 @@
 using namespace std;
 
 bool IS_RUNNING = true;
+extern bool IS_PAUSED;
 
 void exitGame(thread& t)
 {
@@ -27,24 +28,29 @@ void UpdateGameFrame(CGAME* g)
 
 	while (IS_RUNNING)
 	{
-		if (temp >= 50000) //Hết time, thua
-			break;
-
-		if (g->p.getPos().Y >= 9) //Người chơi đến đích, tăng level
+		if (!IS_PAUSED)
 		{
-			unsigned level = g->p.getLevel();
-			if (level < MAX_LEVEL)
-				g->p.setLevel(g->p.getLevel() + 1);
-			g->reset(false);
-			temp = 0;
-		}
+			g->truck[0].moveXY(1, 0);
 
-		if (temp % 20 == 0)
-		{
-			long s = temp / 20;
-			//Di chuyển object
+			if (temp >= 50000) //Hết time, thua
+				break;
+
+			if (g->p.getPos().Y >= 9) //Người chơi đến đích, tăng level
+			{
+				unsigned level = g->p.getLevel();
+				if (level < MAX_LEVEL)
+					g->p.setLevel(g->p.getLevel() + 1);
+				g->reset(false);
+				temp = 0;
+			}
+
+			if (temp % 20 == 0)
+			{
+				long s = temp / 20;
+				//Di chuyển object
+			}
+			temp++;
+			Sleep(1);
 		}
-		temp++;
-		Sleep(1);
 	}
 }

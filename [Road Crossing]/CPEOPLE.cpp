@@ -40,13 +40,13 @@ void CPEOPLE::Move(char button)
 {
 	switch (button)
 	{
-	case 'W': case 'w': case VK_UP:
+	case 'W': case 'I': case VK_UP:
 		up(); break;
-	case 'A': case 'a': case VK_LEFT:
+	case 'A': case 'J': case VK_LEFT:
 		left(); break;
-	case 'S': case 's': case VK_DOWN:
+	case 'S': case 'K': case VK_DOWN:
 		down(); break;
-	case 'D': case 'd': case VK_RIGHT:
+	case 'D': case 'L': case VK_RIGHT:
 		right(); break;
 	}
 }

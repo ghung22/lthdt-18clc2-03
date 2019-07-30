@@ -27,8 +27,8 @@ public:
 	//Các hàm liên quan đến file trong game screen
 	void load();
 	void save();
-	void pause(thread& t);
-	void resume(thread& t);
+	void pause();
+	void resume();
 
 	//Các hàm update trong game screen
 	void UpdateGameInfo(); //in thông tin
