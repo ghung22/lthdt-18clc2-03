@@ -16,11 +16,7 @@ public:
 	void down();
 	void right();
 
-	//bool inContact(COBJECT o);
-	//COBJECT& nowContact(const vector<COBJECT> o); //Trả về vehicle đang va chạm với people
-
 	bool isDead();
-	Point getPos();
 
 	char getIcon(int mode = 1); //0: return char, 1: return id
 	int setIcon(int i);

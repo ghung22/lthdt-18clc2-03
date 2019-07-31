@@ -14,6 +14,34 @@ void exitGame(thread& t)
 	t.join();			//Join main thread
 }
 
+template <class T>
+bool inContact(Point pos, T o)
+{
+	return pos.X <= o.getPos().X && o.getPos().X <= pos.X + 5
+		&& pos.Y == o.getPos().Y;
+}
+void CheckCollision(CGAME* g)
+{
+	Point pos = g->p.getPos();
+	bool colided = false;
+	int n = g->p.getLevel() / 2 + 1; //Số object trên làn đường
+
+	for (int i = 0; i < n; i++)
+	{
+		bool hitTruck = inContact(pos, g->truck[0]),
+			hitCar = inContact(pos, g->car[0]), 
+			hitDino = inContact(pos, g->dino[0]), 
+			hitBird = inContact(pos, g->bird[0]);
+		if (hitTruck || hitCar || hitDino || hitBird)
+		{
+			colided = true;
+			break;
+		}
+	}
+	if (colided)
+		//Hiệu ứng va chạm và thua
+		cout << "Kimochi~~";
+}
 void UpdateGameFrame(CGAME* g)
 {
 	long temp = 0;
@@ -22,8 +50,6 @@ void UpdateGameFrame(CGAME* g)
 	{
 		if (!IS_PAUSED)
 		{
-			//g->truck[0].moveXY(1, 0);
-
 			if (temp >= 50000) //Hết time, thua
 				break;
 
@@ -38,6 +64,8 @@ void UpdateGameFrame(CGAME* g)
 				long s = temp / 20;
 				//Di chuyển object
 			}
+			CheckCollision(g);
+
 			temp++;
 			Sleep(1);
 		}

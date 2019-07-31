@@ -33,6 +33,7 @@ public:
 	void UpdateGameInfo(); //in thông tin
 
 	//Hàm để trong thread
+	friend void CheckCollision(CGAME* g); //kiểm va chạm
 	friend void UpdateGameFrame(CGAME* g);
 
 	bool getSound();

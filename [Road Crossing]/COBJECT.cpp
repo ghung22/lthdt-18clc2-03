@@ -71,10 +71,4 @@ void COBJECT::speak()
 		PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME);
 }
 
-
-bool COBJECT::inContact(Point ppos)
-{
-	return pos.X <= ppos.X && ppos.X <= pos.X + 2
-		&& pos.Y == ppos.Y;
-	//Việc xét điểm y còn tuỳ vào kích cỡ của animal
-}
+Point COBJECT::getPos() { return pos; }

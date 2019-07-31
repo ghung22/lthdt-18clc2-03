@@ -8,6 +8,7 @@
 
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
+extern void CheckCollision(CGAME* g);
 extern bool IS_RUNNING;
 bool IS_PAUSED;
 

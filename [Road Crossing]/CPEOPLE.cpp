@@ -96,21 +96,7 @@ void CPEOPLE::right()
 	}
 }
 
-//bool CPEOPLE::inContact(COBJECT o)
-//{
-//	return o.inContact(pos);
-//}
-//COBJECT& CPEOPLE::nowContact(const COBJECT& o)
-//{
-//	for (int i = 0; i < MAX_TRUCK + MAX_CAR; i++)
-//	{
-//		if (inContact(o))
-//			return o;
-//	}
-//}
-
 bool CPEOPLE::isDead() { return !alive; }
-Point CPEOPLE::getPos() { return pos; }
 
 char CPEOPLE::getIcon(int mode)
 {

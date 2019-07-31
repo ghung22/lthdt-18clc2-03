@@ -18,7 +18,7 @@ public:
 	void moveXY(short x, short y);
 	void speak();
 
-	bool inContact(Point ppos);
+	Point getPos();
 
 protected:
 	Point pos;				//y tính theo số thứ tự làn đường (ko phải toạ độ trên màn hình!!)
