@@ -6,16 +6,16 @@ class CVEHICLE : public COBJECT
 {
 public:
 	CVEHICLE(int y, int spd);
-
-	bool inContact(Point ppos);
 };
 class CTruck : public CVEHICLE
 {
 public:
 	CTruck();
+	CTruck(int x);
 };
 class CCar : public CVEHICLE
 {
 public:
 	CCar();
+	CCar(int x);
 };

@@ -13,11 +13,7 @@ bool IS_PAUSED;
 
 CGAME::CGAME() { sound = true; }
 
-void CGAME::reset(bool loss)
-{
-	initObjects(loss);
-	UpdateGameInfo();
-}
+void CGAME::reset(bool loss) { initObjects(loss); }
 void CGAME::exit(thread& t)
 {
 	exitGame(t);
@@ -60,11 +56,8 @@ void CGAME::start()
 void CGAME::game()
 {
 	PlaySound(0, 0, 0); //mute sound
-	system("cls");
 	w.HideCursor();
-	w.SplitLanes();
 	initObjects();
-	UpdateGameInfo();
 	char pressed;
 	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	IS_RUNNING = true;
@@ -225,24 +218,36 @@ void CGAME::UpdateGameInfo()
 void CGAME::initObjects(bool resetP)
 {
 	clearObjects(resetP);
+	UpdateGameInfo();
 
 	//thêm một object vào làn đường mỗi 2 level
 	unsigned level = p.getLevel(),
 		add = level / 2;
+	short x0 = w.GetConsoleSize().Right / (add + 1), //chia đều các xe trên làn
+		x1 = rand() % 20,
+		x2 = rand() % 20, 
+		x3 = rand() % 20, 
+		x4 = rand() % 20;
 	for (unsigned i = 0; i <= add; i++)
 	{
-		CTruck t;
-		CCar c;
-		CDino d;
-		CBird b;
+		CTruck t(x1);
+		CCar c(x2);
+		CDino d(x3);
+		CBird b(x4);
+		t.draw();
+		c.draw();
+		d.draw();
+		b.draw();
 		truck.push_back(t);
 		car.push_back(c);
 		dino.push_back(d);
 		bird.push_back(b);
+		x1 += x0; x2 += x0; x3 += x0; x4 += x0;
 	}
 }
 void CGAME::clearObjects(bool resetP)
 {
+	w.SplitLanes();
 	for (unsigned i = 0; i < truck.size(); i++)
 		truck.pop_back();
 	for (unsigned i = 0; i < car.size(); i++)
@@ -253,18 +258,15 @@ void CGAME::clearObjects(bool resetP)
 		bird.pop_back();
 
 	unsigned level = p.getLevel();
-	Point temp = p.getPos();
 
+	p.erase();
 	p.reset();
-
-	if (!resetP) //Khi người chơi thắng trước đó, xoá vị trí hiện tại và in vị trí mới
-	{
-		temp.Y = (10 - temp.Y) * 5 + 2;
-		p.erase(temp);
-		p.setLevel(level);
-		temp.Y = (10 - p.getPos().Y) * 5 + 2;
-		p.draw(temp);
-	}
+	if (!resetP) //Nếu người chơi tahwsng trước đó, thay đổi lại level
+		if (level < MAX_LEVEL)
+			p.setLevel(level + 1);
+		else
+			p.setLevel(MAX_LEVEL);
+	p.draw();
 }
 
 bool CGAME::getSound() { return sound; }

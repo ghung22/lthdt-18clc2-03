@@ -12,11 +12,13 @@ class COBJECT
 public:
 	COBJECT();
 
-	void draw(Point p);
-	void erase(Point p);
+	void draw(Point p = { -1, -1 });
+	void erase(Point p = { -1, -1 });
 
 	void moveXY(short x, short y);
 	void speak();
+
+	bool inContact(Point ppos);
 
 protected:
 	Point pos;				//y tính theo số thứ tự làn đường (ko phải toạ độ trên màn hình!!)

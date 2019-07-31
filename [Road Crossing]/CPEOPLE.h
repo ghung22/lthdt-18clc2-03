@@ -16,10 +16,8 @@ public:
 	void down();
 	void right();
 
-	//bool inContact(CVEHICLE v);
-	//bool inContact(CANIMAL a);
-	//CVEHICLE nowContact(const CVEHICLE*& v); //Trả về vehicle đang va chạm với people
-	//CANIMAL nowContact(const CANIMAL*& a);
+	//bool inContact(COBJECT o);
+	//COBJECT& nowContact(const vector<COBJECT> o); //Trả về vehicle đang va chạm với people
 
 	bool isDead();
 	Point getPos();

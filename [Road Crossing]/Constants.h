@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 //Số vật tối đa trên 1 làn đường
-#define MAX_LEVEL 5
+#define MAX_LEVEL 10
 #define MAX_TRUCK 5
 #define MAX_CAR 5
 #define MAX_BIRD 5

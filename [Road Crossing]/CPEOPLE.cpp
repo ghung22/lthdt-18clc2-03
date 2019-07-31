@@ -96,28 +96,16 @@ void CPEOPLE::right()
 	}
 }
 
-//bool CPEOPLE::inContact(CVEHICLE v)
+//bool CPEOPLE::inContact(COBJECT o)
 //{
-//	return v.inContact(pos);
+//	return o.inContact(pos);
 //}
-//bool CPEOPLE::inContact(CANIMAL a)
-//{
-//	return a.inContact(pos);
-//}
-//CVEHICLE CPEOPLE::nowContact(const CVEHICLE*& v)
+//COBJECT& CPEOPLE::nowContact(const COBJECT& o)
 //{
 //	for (int i = 0; i < MAX_TRUCK + MAX_CAR; i++)
 //	{
-//		if (inContact(v[i]))
-//			return v[i];
-//	}
-//}
-//CANIMAL CPEOPLE::nowContact(const CANIMAL*& a)
-//{
-//	for (int i = 0; i < MAX_DINO + MAX_BIRD; i++)
-//	{
-//		if (inContact(a[i]))
-//			return a[i];
+//		if (inContact(o))
+//			return o;
 //	}
 //}
 

@@ -9,7 +9,7 @@ Window wd;
 
 COBJECT::COBJECT()
 {
-	pos = { rand() % 20, 0 };
+	pos = { 0, 0 };
 	speed = 0;
 	for (int i = 0; i < 3; i++)
 		avatar.push_back("");
@@ -18,6 +18,12 @@ COBJECT::COBJECT()
 
 void COBJECT::draw(Point p)
 {
+	if (p.X == -1 && p.Y == -1)
+	{
+		p = pos;
+		p.Y = (10 - p.Y) * 5 + 2;
+	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		wd.GotoXY(p.X, p.Y + i);
@@ -26,13 +32,23 @@ void COBJECT::draw(Point p)
 }
 void COBJECT::erase(Point p)
 {
+	if (p.X == -1 && p.Y == -1)
+	{
+		p = pos;
+		p.Y = (10 - p.Y) * 5 + 2;
+	}
+
 	for (int i = 0; i < 3; i++)
 	{
 		wd.GotoXY(p.X - 4, p.Y + i);
 		cout << "          ";
 	}
-	wd.GotoXY(p.X - 4, p.Y + 3); //Phòng việc xoá mất làn đường
-	cout << '_';
+
+	if (p.Y + 3 < wd.GetConsoleSize().Bottom)
+	{
+		wd.GotoXY(p.X - 4, p.Y + 3); //Phòng việc xoá mất làn đường
+		cout << '_';
+	}
 }
 
 void COBJECT::moveXY(short x, short y)
@@ -42,19 +58,23 @@ void COBJECT::moveXY(short x, short y)
 
 	if (x != 0 || y != 0)
 	{
-		temp.Y = (10 - pos.Y) * 5 + 2;
-		erase(temp);
-
+		erase();
 		pos.X += x;
 		pos.Y += y;
 	}
-
-	temp.Y = (10 - pos.Y) * 5 + 2;
-	draw(temp);
+	draw();
 }
 void COBJECT::speak()
 {
 	static CGAME* g;
 	if (g->getSound())
 		PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME);
+}
+
+
+bool COBJECT::inContact(Point ppos)
+{
+	return pos.X <= ppos.X && ppos.X <= pos.X + 2
+		&& pos.Y == ppos.Y;
+	//Việc xét điểm y còn tuỳ vào kích cỡ của animal
 }
