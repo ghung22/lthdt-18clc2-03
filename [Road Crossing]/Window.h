@@ -20,7 +20,7 @@ public:
 	SMALL_RECT GetConsoleSize();
 
 	void DrawGameMenu(); //Vẽ khung thông tin trên đầu
-	void SplitLanes(); //Chia làn
+	void SplitLanes(bool redrawMenu = true); //Chia làn
 
 private:
 	HANDLE inputHandle, outputHandle;

@@ -11,7 +11,8 @@ void exitGame(thread& t)
 {
 	system("CLS");
 	IS_RUNNING = false;	//Stop update frames
-	t.join();			//Join main thread
+	if (t.joinable())
+		t.join();		//Join main thread
 }
 
 template <class T>
@@ -30,9 +31,9 @@ bool CheckCollision(CGAME* g)
 	{
 		bool hitTruck = inContact(pos, g->truck[0]),
 			hitCar = inContact(pos, g->car[0]), 
-			hitDino = inContact(pos, g->dino[0]), 
-			hitBird = inContact(pos, g->bird[0]);
-		if (hitTruck || hitCar || hitDino || hitBird)
+			hitBird = inContact(pos, g->bird[0]),
+			hitDino = inContact(pos, g->dino[0]);
+		if (hitTruck || hitCar || hitBird || hitDino)
 		{
 			colided = true;
 			break;
@@ -63,12 +64,7 @@ void UpdateGameFrame(CGAME* g)
 				temp = 0;
 			}
 
-			if (temp % 20 == 0)
-			{
-				long s = temp / 20;
-				//Di chuyển object
-			}
-
+			g->MoveObjects(temp); //Di chuyển vật
 			if (!g->p.isDead()) //Nếu đã va chạm thì thua
 				if (CheckCollision(g))
 				{

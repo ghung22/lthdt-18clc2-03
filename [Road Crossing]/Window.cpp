@@ -45,10 +45,16 @@ void Window::ShowCursor() { ChangeCursor(true); }
 Point Window::GotoXY(short x, short y)
 {
 	GetConsoleScreenBufferInfo(outputHandle, &scrBufInfo);
+
+	//Chuyển về phía bên kia màn hình nếu ra ngoài
 	while (x > scrBufInfo.srWindow.Right)
-		x -= scrBufInfo.srWindow.Right;						//Chuyển về phía bên kia màn hình nếu ra ngoài
+		x -= scrBufInfo.srWindow.Right;
+	while (x < scrBufInfo.srWindow.Left)
+		x += scrBufInfo.srWindow.Right;
 	while (y > scrBufInfo.srWindow.Bottom)
 		y -= scrBufInfo.srWindow.Bottom;
+	while (y < scrBufInfo.srWindow.Top)
+		y += scrBufInfo.srWindow.Bottom;
 
 	Point p = { x, y };
 	SetConsoleCursorPosition(outputHandle, p);				//Dời con trỏ đến toạ độ coord trên "console"
@@ -76,12 +82,11 @@ void Window::DrawGameMenu()
 		else
 			cout << char(186);	//║
 
-		for (int ii = 0; ii < scrBufInfo.srWindow.Right - 2; ii++)
-			if (i == 0 || i == 5)
-				cout << char(205);	//═
-			else
-				cout << ' ';
+		if (i == 0 || i == 5)
+			for (int ii = 0; ii < scrBufInfo.srWindow.Right - 2; ii++)
+					cout << char(205);	//═
 
+		GotoXY(scrBufInfo.srWindow.Right - 2, i);
 		if (i == 0)
 			cout << char(187) << endl;	//╗
 		else if (i == 5)
@@ -90,10 +95,14 @@ void Window::DrawGameMenu()
 			cout << char(186) << endl;	//║
 	}
 }
-void Window::SplitLanes()
+void Window::SplitLanes(bool redrawMenu)
 {
-	system("cls");
-	DrawGameMenu();
+	if (redrawMenu)
+	{
+		system("cls");
+		DrawGameMenu();
+	}
+
 	for (int i = 2; i < 10; i++)
 	{
 		GotoXY(0, i * 5);

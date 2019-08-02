@@ -5,6 +5,7 @@ Window wp;
 
 CPEOPLE::CPEOPLE()
 {
+	type = "people";
 	SMALL_RECT sizeRect = wp.GetConsoleSize();
 	icon = 0;
 	//CPEOPLE ko cần dùng speed nên ko cần đặt giá trị
@@ -18,13 +19,12 @@ void CPEOPLE::setAvatar(int i)
 	char c;
 	switch (icon)
 	{
-	case 1: c = P_HEAD1; break; //δ
-	case 2: c = P_HEAD2; break; //σ
+	case 1: c = P_HEAD1; break;
+	case 2: c = P_HEAD2; break;
 	default: c = P_HEAD0; break;
 	}
-	avatar[0] = { ' ', c };								// o				 o
-	avatar[1] = { char(218), char(197), char(217) };	//┌┼┘ //192 197 191 └┼┐
-	avatar[2] = { ' ', char(227) };						// π				 π
+	avatar = PEOPLE_AVA;
+	avatar[1][2] = c;
 }
 void CPEOPLE::reset()
 {

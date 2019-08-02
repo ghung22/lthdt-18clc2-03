@@ -5,16 +5,28 @@
 #include <string>
 #include <conio.h>
 #include <mmsystem.h>
+#include <ctime>
 
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
 extern bool CheckCollision(CGAME* g);
 extern bool IS_RUNNING;
 bool IS_PAUSED;
+bool UPDATING_SCREEN; //Chặn input nếu đang vẽ giao diện lên màn hình
 
 CGAME::CGAME() { sound = true; }
 
-void CGAME::reset(bool loss) { initObjects(loss); }
+void CGAME::reset(bool loss, thread* t)
+{
+	if (loss)
+	{
+		if (t->joinable())
+			t->join();
+		game();
+	}
+	else
+		initObjects(loss);
+}
 void CGAME::exit(thread& t)
 {
 	exitGame(t);
@@ -76,7 +88,7 @@ void CGAME::game(bool load)
 
 	while (IS_RUNNING)
 	{
-		if (_kbhit())
+		if (_kbhit() && !UPDATING_SCREEN)
 		{
 			pressed = toupper(_getch());
 			if (!p.isDead())	//Nếu người chơi chưa die, nhận nút di chuyển và các nút menu
@@ -105,16 +117,18 @@ void CGAME::game(bool load)
 					break;
 				default:
 					NOTPAUSED:
-					resume();
+					if (IS_PAUSED)
+						resume();
 					p.Move(pressed); //Các phím di chuyển người chơi
 					break;
 				}
-			else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi
+			else //Khi đã die
 			{
 				if (pressed == 'Y')
-					start();
+					reset(true, &gThread);
 				else
 					exit(gThread);
+				break;
 			}
 		}
 	}
@@ -312,54 +326,75 @@ void CGAME::UpdateGameInfo()
 	w.GotoXY(32, 3);
 	cout << "ESC to exit, P to pause";
 }
+template <class T>
+void laneMove(T& o, long t)
+{
+	for (int i = 0; i < o.size(); i++)
+		o[i].moveXY(1, 0, t);
+}
+void CGAME::MoveObjects(long timer)
+{
+	//if (timer % 2000 == 0 && !_kbhit())
+		//w.SplitLanes(false);
 
+	laneMove(truck, timer);
+	laneMove(car, timer);
+	laneMove(bird, timer);
+	laneMove(dino, timer);
+}
+
+template <class T>
+void initVector(T& o, int dir)
+{
+	for (unsigned i = 0; i < o.size(); i++)
+	{
+		o[i].draw();
+		o[i].speedDirChange(dir);
+	}
+}
 void CGAME::initObjects(bool resetP)
 {
+	UPDATING_SCREEN = true;
 	clearObjects(resetP);
 	UpdateGameInfo();
 
 	//thêm một object vào làn đường mỗi 2 level
 	unsigned level = p.getLevel(),
 		add = level / 2;
-	short x0 = w.GetConsoleSize().Right / (add + 1), //chia đều các xe trên làn
+	short x0 = w.GetConsoleSize().Right / (add + 1), //chia đều các xe trên làn, x ngẫu nhiên
 		x1 = rand() % 20,
 		x2 = rand() % 20, 
 		x3 = rand() % 20, 
 		x4 = rand() % 20;
+	srand(time(0));
+	int dir0 = rand() % 2 == 0 ? 1 : -1, dir1 = dir0, //thay đổi chiều di chuyển ngẫu nhiên
+		dir2 = rand() % 2 == 0 ? 1 : -1;
 	for (unsigned i = 0; i <= add; i++)
 	{
-		CTruck t(x1);
-		CCar c(x2);
-		CDino d(x3);
-		CBird b(x4);
-		t.draw();
-		c.draw();
-		d.draw();
-		b.draw();
-		truck.push_back(t);
-		car.push_back(c);
-		dino.push_back(d);
-		bird.push_back(b);
+		CTruck t(x1); CCar c(x2); CBird b(x3); CDino d(x4);
+		truck.push_back(t); car.push_back(c); bird.push_back(b); dino.push_back(d);
 		x1 += x0; x2 += x0; x3 += x0; x4 += x0;
 	}
+	initVector(truck, dir0);
+	initVector(car, dir1);
+	initVector(bird, dir2);
+	initVector(dino, 1);
+
+	UPDATING_SCREEN = false;
 }
 void CGAME::clearObjects(bool resetP)
 {
 	w.SplitLanes();
-	for (unsigned i = 0; i < truck.size(); i++)
-		truck.pop_back();
-	for (unsigned i = 0; i < car.size(); i++)
-		car.pop_back();
-	for (unsigned i = 0; i < dino.size(); i++)
-		dino.pop_back();
-	for (unsigned i = 0; i < bird.size(); i++)
-		bird.pop_back();
+	truck.clear();
+	car.clear();
+	bird.clear();
+	dino.clear();
 
 	unsigned level = p.getLevel();
 
 	p.erase();
 	p.reset();
-	if (!resetP) //Nếu người chơi tahwsng trước đó, thay đổi lại level
+	if (!resetP) //Nếu người chơi thắng trước đó, thay đổi lại level
 		if (level < MAX_LEVEL)
 			p.setLevel(level + 1);
 		else
