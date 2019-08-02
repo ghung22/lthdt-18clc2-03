@@ -17,6 +17,7 @@ public:
 	void right();
 
 	bool isDead();
+	void kill();
 
 	char getIcon(int mode = 1); //0: return char, 1: return id
 	int setIcon(int i);

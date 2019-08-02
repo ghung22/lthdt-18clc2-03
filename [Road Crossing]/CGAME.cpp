@@ -8,7 +8,7 @@
 
 Window w;
 extern void UpdateGameFrame(CGAME* g); //cho biết có hàm này ở bên file khác, để đem vào thread bên dưới ko bị lỗi undefined
-extern void CheckCollision(CGAME* g);
+extern bool CheckCollision(CGAME* g);
 extern bool IS_RUNNING;
 bool IS_PAUSED;
 
@@ -19,6 +19,11 @@ void CGAME::exit(thread& t)
 {
 	exitGame(t);
 	start();
+}
+void CGAME::lose(int dialog)
+{
+	p.kill();
+	prompt(dialog);
 }
 
 void CGAME::start()
@@ -32,10 +37,10 @@ void CGAME::start()
 	system("cls"); // xóa màn hình
 	cout << endl << endl
 		<< "\t\t\t\t================ ROAD CROSSING ================" << endl
-		<< "\t\t\t\t\t1. NEW GAME " << endl
-		<< "\t\t\t\t\t2. LOAD GAME " << endl
-		<< "\t\t\t\t\t3. SETTINGS " << endl
-		<< "\t\t\t\t\t0. EXIT " << endl
+		<< "\t\t\t\t\t[1] NEW GAME " << endl
+		<< "\t\t\t\t\t[2] LOAD GAME " << endl
+		<< "\t\t\t\t\t[3] SETTINGS " << endl
+		<< "\t\t\t\t\t[0] EXIT " << endl
 		<< "\t\t\t\t===============================================" << endl;
 	cout << "Choose your option" << endl << endl;
 
@@ -48,23 +53,28 @@ void CGAME::start()
 			switch (lc)
 			{
 			case '1': game(); break;
-			case '2': load(); break;
+			case '2': game(true); break;
 			case '3': setting(); break;
 			}
 		}
 	}
 }
-void CGAME::game()
+void CGAME::game(bool load)
 {
 	PlaySound(0, 0, 0); //mute sound
 	w.HideCursor();
+
 	initObjects();
+	if (load)
+		prompt(LOADGAME_DIALOG);
+	//Chạy hàm song song với main()
+	thread gThread(UpdateGameFrame, this);
+
 	char pressed;
-	thread gThread(UpdateGameFrame, this);		//Chạy hàm song song với main()
 	IS_RUNNING = true;
 	IS_PAUSED = false;
-	bool escape = false;
-	while (!escape)
+
+	while (IS_RUNNING)
 	{
 		if (_kbhit())
 		{
@@ -73,21 +83,34 @@ void CGAME::game()
 				switch (pressed)
 				{
 				case VK_ESCAPE:	//Phím ESC
-					escape = true;
-					exit(gThread);
-					break;
+					if (!IS_PAUSED)
+						goto EXIT;
+					else
+						goto NOTPAUSED;
 				case 'P':
 					pause();
+					prompt(PAUSED_DIALOG);
+					break;
+				case 'L':
+					if (IS_PAUSED)
+						prompt(LOADGAME_DIALOG);
+					else
+						goto NOTPAUSED;
+					break;
+				case 'S':
+					if (IS_PAUSED)
+						prompt(SAVEGAME_DIALOG);
+					else
+						goto NOTPAUSED;
 					break;
 				default:
+					NOTPAUSED:
 					resume();
 					p.Move(pressed); //Các phím di chuyển người chơi
 					break;
 				}
 			else	//Khi đã die hoặc mới bắt đầu game, ấn Y thì bắt đầu chơi
 			{
-				w.GotoXY(40, 10);
-				cout << "Lost. Press Y to play again.";
 				if (pressed == 'Y')
 					start();
 				else
@@ -95,6 +118,8 @@ void CGAME::game()
 			}
 		}
 	}
+EXIT:
+	exit(gThread);
 }
 void CGAME::setting()
 {
@@ -106,10 +131,10 @@ void CGAME::setting()
 	system("cls");
 	cout
 		<< "================ SETTINGS ================" << endl
-		<< "1. Music and Sounds: " << sound << endl
-		<< "2. Player head: " << p.getIcon(0) << endl
-		<< "3. Restore default settings" << endl
-		<< "0. Quit." << endl
+		<< "[1] Music and Sounds: " << sound << endl
+		<< "[2] Player head: " << p.getIcon(0) << endl
+		<< "[3] Restore default settings" << endl
+		<< "[0] Quit." << endl
 		<< "==========================================" << endl;
 	cout << "Choose your option";
 
@@ -175,39 +200,111 @@ void CGAME::settingSave()
 		<< "cPlayerCharacter=" << p.getIcon() << endl;
 	fout.close();
 }
-
-void CGAME::load()
+void CGAME::prompt(int dialog)
 {
-	w.GotoXY(5, 40);
-	ifstream fin("roadcrossing.sav", ios::binary);
+	ClearInfoBox();
+
+	/*
+		- 0: Time's up
+		- 1: Player die
+	*/
+	switch (dialog)
+	{
+		//Người chơi thua. Phần xử lí ấn Y ở bên hàm CGAME::game()
+	case 0:
+		cout << "Time is up. You lose.";
+		break;
+	case 1:
+		cout << "The player is dead. You lose.";
+		break;
+
+		//Load và Save game
+	case 2:
+		cout << "Enter savefile name to load";
+		break;
+	case 3:
+		cout << "Enter savefile name to save";
+		break;
+
+		//Pause Menu
+	case 4:
+		cout << "Game paused. Press L or S to load or save.";
+		break;
+	default: break;
+	}
+
+	w.GotoXY(32, 3);
+	if (dialog == 0 || dialog == 1)
+		cout << "Press Y to play again.";
+	else if (dialog == 2 || dialog == 3)
+	{
+		cout << "  > ";
+		string file;
+		getline(cin, file);
+		file = "Data\\" + file + ".sav";
+		if (dialog == 2)
+			load(file);
+		else
+			save(file);
+		prompt(PAUSED_DIALOG);
+	}
+}
+
+void CGAME::load(string f)
+{
+	w.GotoXY(32, 4);
+	ifstream fin(f, ios::binary);
 	if (fin.fail())
 	{
-		cout << "Error loading file";
+		cout << "Error loading from " << f;
 		return;
 	}
-	int temp;
-	fin.read((char*)&temp, sizeof(int));
+
+	//Kiểu dữ liệu lưu trong file thuộc kiểu char[2]
+	char temp[2];
+	fin.read(temp, 2);
 	fin.close();
-	p.setLevel(temp);
+
+	string val = temp;
+	p.setLevel(stoi(val) - 1);
+	initObjects(false);
 }
-void CGAME::save()
+void CGAME::save(string f)
 {
-	w.GotoXY(5, 40);
-	ofstream fout("roadcrossing.sav", ios::binary);
+	w.GotoXY(32, 4);
+	ofstream fout(f, ios::binary);
 	if (fout.fail())
 	{
-		cout << "Error saving file";
+		cout << "Error saving to " << f;
 		return;
 	}
-	fout.write((char*)p.getLevel(), sizeof(int));
+
+	//Chuyển kiểu dữ liệu sang char[2] do lưu số unsigned bị lỗi :)
+	string val = to_string(p.getLevel());
+	char temp[2];
+	strcpy_s(temp, 2, val.c_str());
+
+	fout.write(temp, 2);
 	fout.close();
-	cout << "Saved to roadcrossing.sav";
+	cout << "Saved to " << f;
 }
 void CGAME::pause() { IS_PAUSED = true; }
-void CGAME::resume() { IS_PAUSED = false; }
+void CGAME::resume() { UpdateGameInfo(); IS_PAUSED = false; }
 
+void CGAME::ClearInfoBox()
+{
+	w.GotoXY(32, 2);
+	cout << "                                                     ";
+	w.GotoXY(32, 3);
+	cout << "                                                     ";
+	w.GotoXY(32, 2);
+}
 void CGAME::UpdateGameInfo()
 {
+	w.GotoXY(32, 4); //Xoá thông báo lỗi (nếu có)
+	cout << "                                                     ";
+
+	ClearInfoBox();
 	w.GotoXY(3, 2);
 	cout << "Level: " << p.getLevel();
 	w.GotoXY(32, 2);

@@ -21,6 +21,13 @@
 #define P_HEAD1 char(235)
 #define P_HEAD2 char(229)
 
+//Các giá trị dialog của hàm prompt()
+#define TIMEUP_DIALOG 0
+#define PLAYERDIE_DIALOG 1
+#define LOADGAME_DIALOG 2
+#define SAVEGAME_DIALOG 3
+#define PAUSED_DIALOG 4
+
 /*
 Mỗi làn rộng 5 hàng:
 	1 hàng trống

@@ -97,6 +97,7 @@ void CPEOPLE::right()
 }
 
 bool CPEOPLE::isDead() { return !alive; }
+void CPEOPLE::kill() { alive = false; }
 
 char CPEOPLE::getIcon(int mode)
 {

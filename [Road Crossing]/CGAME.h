@@ -15,25 +15,28 @@ public:
 	//Các hàm mang tính global đến game screen
 	void reset(bool loss = true);
 	void exit(thread& t);
+	void lose(int dialog);
 
 	//Các hàm menu
 	void start();
-	void game();
+	void game(bool load = false);
 	void setting();
 	void settingLoad();
 	void settingSave();
+	void prompt(int dialog);
 
 	//Các hàm liên quan đến file trong game screen
-	void load();
-	void save();
+	void load(string f);
+	void save(string f);
 	void pause();
 	void resume();
 
 	//Các hàm update trong game screen
+	void ClearInfoBox();
 	void UpdateGameInfo(); //in thông tin
 
 	//Hàm để trong thread
-	friend void CheckCollision(CGAME* g); //kiểm va chạm
+	friend bool CheckCollision(CGAME* g); //kiểm va chạm
 	friend void UpdateGameFrame(CGAME* g);
 
 	bool getSound();

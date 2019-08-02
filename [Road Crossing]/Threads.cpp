@@ -20,7 +20,7 @@ bool inContact(Point pos, T o)
 	return pos.X <= o.getPos().X && o.getPos().X <= pos.X + 5
 		&& pos.Y == o.getPos().Y;
 }
-void CheckCollision(CGAME* g)
+bool CheckCollision(CGAME* g)
 {
 	Point pos = g->p.getPos();
 	bool colided = false;
@@ -41,6 +41,7 @@ void CheckCollision(CGAME* g)
 	if (colided)
 		//Hiệu ứng va chạm và thua
 		cout << "Kimochi~~";
+	return colided;
 }
 void UpdateGameFrame(CGAME* g)
 {
@@ -51,7 +52,10 @@ void UpdateGameFrame(CGAME* g)
 		if (!IS_PAUSED)
 		{
 			if (temp >= 50000) //Hết time, thua
+			{
+				g->lose(0);
 				break;
+			}
 
 			if (g->p.getPos().Y >= 9) //Người chơi đến đích, tăng level
 			{
@@ -64,7 +68,13 @@ void UpdateGameFrame(CGAME* g)
 				long s = temp / 20;
 				//Di chuyển object
 			}
-			CheckCollision(g);
+
+			if (!g->p.isDead()) //Nếu đã va chạm thì thua
+				if (CheckCollision(g))
+				{
+					g->lose(1);
+					break;
+				}
 
 			temp++;
 			Sleep(1);
