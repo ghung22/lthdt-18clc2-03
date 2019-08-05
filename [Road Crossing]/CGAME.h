@@ -51,6 +51,7 @@ private:
 	vector<CBird> bird;
 	vector<CDino> dino;
 	CPEOPLE p;
+	vector<CLIGHT> light;
 
 	bool sound;
 };

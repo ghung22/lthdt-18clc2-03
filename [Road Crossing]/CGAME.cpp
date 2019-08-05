@@ -337,8 +337,14 @@ void CGAME::MoveObjects(long timer)
 	//if (timer % 2000 == 0 && !_kbhit())
 		//w.SplitLanes(false);
 
-	laneMove(truck, timer);
-	laneMove(car, timer);
+	bool green;
+	green = light[0].moveXY(timer);
+	light[1].moveXY(timer);
+	if (green)
+	{
+		laneMove(truck, timer);
+		laneMove(car, timer);
+	}
 	laneMove(bird, timer);
 	laneMove(dino, timer);
 }
@@ -380,6 +386,16 @@ void CGAME::initObjects(bool resetP)
 	initVector(bird, dir2);
 	initVector(dino, 1);
 
+	//thêm đèn giao thông
+	short tempX;
+	if (dir0 == -1)
+		tempX = 0;
+	else
+		tempX = w.GetConsoleSize().Right - 2;
+	CLIGHT l1(tempX, TRUCK_Y), l2(tempX, CAR_Y);
+	light.push_back(l1);
+	light.push_back(l2);
+
 	UPDATING_SCREEN = false;
 }
 void CGAME::clearObjects(bool resetP)
@@ -389,6 +405,7 @@ void CGAME::clearObjects(bool resetP)
 	car.clear();
 	bird.clear();
 	dino.clear();
+	light.clear();
 
 	unsigned level = p.getLevel();
 
@@ -402,4 +419,4 @@ void CGAME::clearObjects(bool resetP)
 	p.draw();
 }
 
-bool CGAME::getSound() { return sound; }
+bool CGAME::getSound() { if (this != nullptr) return sound; }

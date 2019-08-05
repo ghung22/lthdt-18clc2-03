@@ -18,8 +18,18 @@ void exitGame(thread& t)
 template <class T>
 bool inContact(Point pos, T o)
 {
-	return pos.X <= o.getPos().X && o.getPos().X <= pos.X + 5
-		&& pos.Y == o.getPos().Y;
+	Window wt;
+	short x = o.getPos().X, y = o.getPos().Y,
+		maxX = wt.GetConsoleSize().Right,
+		minX = wt.GetConsoleSize().Left;
+
+	while (x > maxX)
+		x -= maxX;
+	while (x < minX)
+		x += maxX;
+
+	return x <= pos.X && pos.X <= x + 5
+		&& pos.Y == y;
 }
 bool CheckCollision(CGAME* g)
 {
@@ -29,10 +39,10 @@ bool CheckCollision(CGAME* g)
 
 	for (int i = 0; i < n; i++)
 	{
-		bool hitTruck = inContact(pos, g->truck[0]),
-			hitCar = inContact(pos, g->car[0]), 
-			hitBird = inContact(pos, g->bird[0]),
-			hitDino = inContact(pos, g->dino[0]);
+		bool hitTruck = inContact(pos, g->truck[i]),
+			hitCar = inContact(pos, g->car[i]), 
+			hitBird = inContact(pos, g->bird[i]),
+			hitDino = inContact(pos, g->dino[i]);
 		if (hitTruck || hitCar || hitBird || hitDino)
 		{
 			colided = true;

@@ -34,6 +34,7 @@ Chia màn hình thành các làn đường (list từ trên xuống)
 #define CAR_SPD 22
 #define BIRD_SPD 21
 #define DINO_SPD 31
+#define LIGHT_SPD 2000
 
 //Biểu tượng của CPEOPLE
 #define P_HEAD0 'o'

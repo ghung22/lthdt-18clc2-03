@@ -31,3 +31,17 @@ protected:
 	vector<string> avatar;	//Chứa ngoại hình của các vật (có 3 dòng)
 	string voice;			//Âm thanh của object để nói hoặc kêu
 };
+
+class CLIGHT : public COBJECT
+{
+public:
+	CLIGHT();
+	CLIGHT(short x, short y);
+
+	void changeColor();
+	void draw();
+	bool moveXY(long timer = 0);
+
+private:
+	bool green;
+};

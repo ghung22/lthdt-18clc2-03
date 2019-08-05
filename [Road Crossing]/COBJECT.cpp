@@ -14,7 +14,7 @@ COBJECT::COBJECT()
 	speed = 1;
 	for (int i = 0; i < 3; i++)
 		avatar.push_back("");
-	voice = "Data\\Sounds\\";
+	voice = "";
 }
 
 void COBJECT::draw(Point p)
@@ -58,12 +58,18 @@ void COBJECT::moveXY(short x, short y, long timer)
 		pos.Y += y;
 	}
 	draw(pos);
+
+	if (rand() % 100 == 0)
+		speak();
 }
 void COBJECT::speak()
 {
 	static CGAME* g;
-	if (g->getSound())
-		PlaySound(voice.c_str(), NULL, SND_ASYNC | SND_FILENAME);
+	if (g->getSound() && voice != "")
+	{
+		string temp = "Data\\Sounds\\" + voice;
+		PlaySound(temp.c_str(), NULL, SND_ASYNC | SND_FILENAME);
+	}
 }
 
 Point COBJECT::getPos() { return pos; }
@@ -82,4 +88,47 @@ void COBJECT::flip()
 	//Nếu đang đi chiều thuận mà avatar đang hướng chiều nghịch
 	else if (speed > 0 && avatar != defaultAva::avatar(type))
 		avatar = defaultAva::avatar(type);
+}
+
+CLIGHT::CLIGHT() : COBJECT()
+{
+	type = "light";
+	speed = LIGHT_SPD;
+	voice = "Light.wav";
+	green = false;
+}
+CLIGHT::CLIGHT(short x, short y) : CLIGHT() { pos.X = x; pos.Y = y; }
+void CLIGHT::changeColor() { green = !green; }
+void CLIGHT::draw()
+{
+	short Y = (10 - pos.Y) * 5;
+	wd.GotoXY(pos.X, Y);
+	char temp[2] = { char(223), 0 };
+
+	if (!green)
+	{
+		printf("\033[031m"); //red
+		printf(temp); //▀
+		printf("\033[0m"); //reset color
+		printf(temp); //▀
+	}
+	else
+	{
+		printf("\033[0m"); //reset color
+		printf(temp); //▀
+		printf("\033[032m"); //green
+		printf(temp); //▀
+		printf("\033[0m"); //reset color
+	}
+}
+bool CLIGHT::moveXY(long timer)
+{
+	if (timer % abs(speed) != 0)
+		return green;
+
+	changeColor();
+	draw();
+	speak();
+
+	return green;
 }
