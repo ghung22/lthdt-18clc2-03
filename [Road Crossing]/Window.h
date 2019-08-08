@@ -16,6 +16,7 @@ public:
 	void ShowCursor();
 
 	Point GotoXY(short x, short y);
+	Point GotoXY(Point p);
 	Point GetXY();
 	SMALL_RECT GetConsoleSize();
 

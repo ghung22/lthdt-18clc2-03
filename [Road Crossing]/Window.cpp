@@ -60,6 +60,7 @@ Point Window::GotoXY(short x, short y)
 	SetConsoleCursorPosition(outputHandle, p);				//Dời con trỏ đến toạ độ coord trên "console"
 	return p;
 }
+Point Window::GotoXY(Point p) { return GotoXY(p.X, p.Y); }
 Point Window::GetXY()
 {
 	GetConsoleScreenBufferInfo(outputHandle, &scrBufInfo);

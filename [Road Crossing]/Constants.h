@@ -30,10 +30,10 @@ Chia màn hình thành các làn đường (list từ trên xuống)
 #define PEOPLE_Y 1
 
 //Tốc độ của các vật
-#define TRUCK_SPD 26
-#define CAR_SPD 22
-#define BIRD_SPD 21
-#define DINO_SPD 31
+#define TRUCK_SPD 22
+#define CAR_SPD 18
+#define BIRD_SPD 17
+#define DINO_SPD 27
 #define LIGHT_SPD 2000
 
 //Biểu tượng của CPEOPLE

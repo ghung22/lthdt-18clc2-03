@@ -59,7 +59,7 @@ void COBJECT::moveXY(short x, short y, long timer)
 	}
 	draw(pos);
 
-	if (rand() % 100 == 0)
+	if (rand() % 200 == 0)
 		speak();
 }
 void COBJECT::speak()

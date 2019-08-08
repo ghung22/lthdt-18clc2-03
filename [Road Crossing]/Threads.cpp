@@ -1,6 +1,7 @@
 ﻿#include "Threads.h"
 #include "CGAME.h"
 
+#include <mmsystem.h>
 #include <iostream>
 using namespace std;
 
@@ -50,8 +51,33 @@ bool CheckCollision(CGAME* g)
 		}
 	}
 	if (colided)
+	{
 		//Hiệu ứng va chạm và thua
-		cout << "Kimochi~~";
+		if (g->getSound())
+		{
+			string temp = "Data\\Sounds\\Crash.wav";
+			PlaySound(temp.c_str(), NULL, SND_ASYNC | SND_FILENAME);
+		}
+
+		Window wt;
+		Point t = pos;
+		t.Y = (10 - t.Y) * 5 + 2;
+		t.Y++; wt.GotoXY(t);
+		cout << "  " << char(249) << "  ";
+		Sleep(100); wt.GotoXY(t);
+		cout << "  O  ";
+		Sleep(100);
+
+		t = pos;
+		t.Y = (10 - t.Y) * 5 + 2;
+		wt.GotoXY(t);
+		cout << "\\ | /";
+		t.Y++; wt.GotoXY(t);
+		cout << "-   -";
+		t.Y++; wt.GotoXY(t);
+		cout << "/ | \\";
+		Sleep(1);
+	}
 	return colided;
 }
 void UpdateGameFrame(CGAME* g)
